@@ -39,13 +39,13 @@ if (isset($_POST['btnRegister'])) {
     <link rel="icon" href="assets/medi_logo.png">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
+    <link href="shared/css/login.css" rel="stylesheet">
+    <!-- <style>
         body, html {
             height: 100%;
             margin: 0;
             overflow: hidden;
             font-family: 'Poppins', sans-serif;
-            /* font-weight: bold; */
         }
 
         .container-wrapper {
@@ -109,11 +109,10 @@ if (isset($_POST['btnRegister'])) {
                 height: auto;
             }
         }
-    </style>
+    </style> -->
 </head>
 <body>
 
-<div class="container-wrapper">
     <!-- 🔵 Left Video Panel -->
     <div class="video-side">
         <video autoplay muted loop>
@@ -123,13 +122,17 @@ if (isset($_POST['btnRegister'])) {
     </div>
 
     <!-- 🟢 Right Registration Form -->
-    <div class="form-side">
-        <div class="register-card" font="Verdana">
+    <div class="form-overlay">
+        <div class="register-card">
             <h3 class="text-center mb-4">Register for MediTrack</h3>
             <form action="register.php" method="POST">
                 <div class="mb-3">
                     <label for="username" class="form-label">Username</label>
                     <input type="text" name="username" class="form-control" id="username" required />
+                </div>
+                <div class="mb-3">
+                    <label for="contact" class="form-label">Email Address</label>
+                    <input type="email" name="contact" class="form-control" id="contact" required />
                 </div>
                 <div class="mb-3">
                     <label for="contact" class="form-label">Contact Number</label>
@@ -149,11 +152,10 @@ if (isset($_POST['btnRegister'])) {
                 <button type="submit" name="btnRegister" class="btn btn-success w-100">Register</button>
             </form>
             <p class="text-center mt-3">
-                Already registered? <a href="login.php">Login here</a>
+                Already registered? <a href="index.php">Login here</a>
             </p>
         </div>
     </div>
-</div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
 </body>
