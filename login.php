@@ -18,7 +18,7 @@ if (isset($_POST['btnLogin'])) {
             $_SESSION['role'] = $user['role'];
 
             if ($user['role'] == "user") {
-                header("Location: index.php");
+                header("Location: login.php");
                 exit();
             } elseif ($user['role'] == "admin") {
                 header("Location: admin_dashboard.php");
@@ -42,8 +42,8 @@ if (isset($_POST['btnLogin'])) {
     <link rel="icon" href="assets/medi_logo.png">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- <link rel="stylesheet" href="shared/css/login.css"> -->
-    <style>
+    <link rel="stylesheet" href="shared/css/login.css">
+    <!-- <style>
         body, html {
             height: 100%;
             margin: 0;
@@ -69,7 +69,7 @@ if (isset($_POST['btnLogin'])) {
             object-fit: cover;
         }
 
-        .form-side {
+        .form-overlay {
             border-radius: 2rem;
             width: 500px;
             max-width: 100%;
@@ -112,12 +112,12 @@ if (isset($_POST['btnLogin'])) {
                 height: auto;
             }
         }
-    </style>
+    </style> -->
 </head>
 
 <body>
 
-<div class="container-wrapper">
+
     <!-- 🔵 Left Video Section -->
     <div class="video-side">
         <video autoplay muted loop>
@@ -127,7 +127,7 @@ if (isset($_POST['btnLogin'])) {
     </div>
 
     <!-- 🟢 Right Form Section -->
-    <div class="form-side">
+    <div class="form-overlay">
         <div class="login-card">
             <h3 class="text-center mb-4">Login to MediTrack</h3>
             <form method="POST">
