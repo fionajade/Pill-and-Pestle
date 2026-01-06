@@ -33,6 +33,8 @@ if ($userID) {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>MediTrack | Medicine</title>
+  
+  <link rel="icon" href="assets/medlogotop.png">
   <!-- Bootstrap 5 -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="shared/css/nav.css" rel="stylesheet">
@@ -366,31 +368,9 @@ if ($userID) {
 <body>
   <div class="top-bar">MediTrack</div>
 
-  <!-- Header Wrapper (Full Width Border) as requested -->
-  <div class="top-bar-wrapper">
-    <!-- Content Container (1100px) -->
-    <div class="custom-container">
-      <header>
-        <a href="#" class="text-decoration-none">
-          <img src="assets/medilogo.png" height="20" class="me-2">
-        </a>
-
-        <div class="search-container">
-          <span class="search-icon">🔍</span>
-          <input type="text" placeholder="Search Medicine">
-        </div>
-
-        <nav>
-          <a href="index.php" onclick="loadLandingPage()">Home</a>
-          <a href="view_medicines.php">Medicines</a>
-          <div class="user-circle"></div>
-        </nav>
-      </header>
-    </div>
-  </div>
-
   <!-- Main Content (1100px) -->
   <div class="custom-container">
+    <?php include 'client_navbar.php'; ?>
     <!-- Title -->
     <h1 class="page-title">Medicine</h1>
 
@@ -471,278 +451,275 @@ if ($userID) {
     </div>
   </div>
 
-  <!-- Footer Wrapper -->
-  <footer>
-    <div class="custom-container">
-      <div class="footer-content">
-        <div class="footer-contact">
-          <p>Email: <a href="mailto:support@meditrack.com">support@meditrack.com</a></p>
-          <p>Phone: +63 912 345 6789</p>
-          <p>123 Health St., Makati City, Philippines</p>
-        </div>
-        <div class="footer-right">
-          <div class="footer-logo">
-            <!-- Simple square icon to match CSS -->
-            <div
-              style="width: 15px; height: 15px; border: 2px solid white; border-radius: 2px; transform: rotate(45deg);">
-            </div>
-          </div>
-          <p>Your health, our priority — trusted care from MediTrack Pharmacy.</p>
-        </div>
-      </div>
-      <div class="copyright">
-        © 2025 MediTrack Pharmacy. All rights reserved.
-      </div>
-    </div>
-  </footer>
-
+  <?php include 'footer.php'; ?>
   <?php include 'chatbot.php'; ?>
 
 
   <!-- JS Logic -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-  <script>
-    let cart = [];
-    let currentCategoryId = null;
-    let isInfoLocked = false;
+<script>
+  let cart = [];
+  let currentCategoryId = null;
+  let isInfoLocked = false;
+  let searchTimeout; 
 
-    document.addEventListener("DOMContentLoaded", () => {
-      loadCategories();
+  document.addEventListener("DOMContentLoaded", () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlSearchQuery = urlParams.get('search');
+    const searchInput = document.getElementById("navbarSearch");
 
-      // FIXED: Only auto-lock if ALL fields are filled
+    loadCategories(urlSearchQuery ? true : false);
+
+    if (urlSearchQuery && searchInput) {
+      searchInput.value = urlSearchQuery;
+      globalSearchMedicines(urlSearchQuery);
+    } else {
       const name = document.getElementById("userName").value.trim();
       const contact = document.getElementById("userContact").value.trim();
       const address = document.getElementById("userAddress").value.trim();
-
       if (name && contact && address) {
         confirmUserInfo();
       }
+    }
 
-      document.getElementById("globalSearch").addEventListener("input", function (e) {
-        filterMedicines(e.target.value);
+    if (searchInput) {
+      searchInput.addEventListener("input", function(e) {
+        const query = e.target.value.trim();
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+          if (query.length > 0) {
+            globalSearchMedicines(query);
+          } else {
+            if (currentCategoryId) loadMedicines(currentCategoryId);
+          }
+        }, 300);
       });
-    });
 
-    // --- Category Logic ---
-    async function loadCategories() {
-      try {
-        const res = await fetch('categories.php');
-        const categories = await res.json();
-
-        const listEl = document.getElementById("categoryList");
-        listEl.innerHTML = "";
-
-        if (categories.length > 0) {
-          categories.forEach((cat, index) => {
-            const li = document.createElement("li");
-            li.className = "category-item";
-            li.textContent = cat.name;
-            li.onclick = () => selectCategory(cat.id, li);
-            listEl.appendChild(li);
-
-            if (index === 0) selectCategory(cat.id, li);
-          });
-        } else {
-          listEl.innerHTML = "<li class='category-item'>No Categories</li>";
+      searchInput.addEventListener("keypress", function(e) {
+        if (e.key === "Enter") {
+          globalSearchMedicines(this.value.trim());
         }
-
-      } catch (err) {
-        console.error("Error categories", err);
-        // Fallback for demo purposes if PHP not running
-        const listEl = document.getElementById("categoryList");
-        listEl.innerHTML = `<li class="category-item active" onclick="selectCategory(1, this)">All Medicines</li>`;
-        loadMedicines(1);
-      }
+      });
     }
+  });
 
-    function selectCategory(id, element) {
-      document.querySelectorAll('.category-item').forEach(el => el.classList.remove('active'));
-      element.classList.add('active');
-      currentCategoryId = id;
-      loadMedicines(id);
-    }
+  // --- Category Logic ---
+  async function loadCategories(isSearching) {
+    try {
+      const res = await fetch('categories.php');
+      const categories = await res.json();
+      const listEl = document.getElementById("categoryList");
+      listEl.innerHTML = "";
 
-    // --- Medicine Logic ---
-    async function loadMedicines(catId) {
-      const grid = document.getElementById("medicineGrid");
-      const spinner = document.getElementById("loadingMeds");
+      if (categories.length > 0) {
+        categories.forEach((cat, index) => {
+          const li = document.createElement("li");
+          li.className = "category-item";
+          li.textContent = cat.name;
+          li.onclick = () => selectCategory(cat.id, li);
+          listEl.appendChild(li);
 
-      grid.innerHTML = "";
-      spinner.style.display = "block";
-
-      try {
-        const res = await fetch('medicines.php', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ category_id: catId })
+          if (index === 0 && !isSearching) {
+            selectCategory(cat.id, li);
+          }
         });
-        const medicines = await res.json();
-        spinner.style.display = "none";
-        renderMedicines(medicines);
-      } catch (err) {
-        console.error("Error medicines", err);
-        spinner.style.display = "none";
-        grid.innerHTML = "<p class='text-muted'>Unable to load medicines (Database connection needed).</p>";
-      }
-    }
-
-    function renderMedicines(meds) {
-      const grid = document.getElementById("medicineGrid");
-      grid.innerHTML = "";
-
-      if (!meds || meds.length === 0) {
-        grid.innerHTML = "<p class='text-center text-muted col-12'>No medicines found.</p>";
-        return;
-      }
-
-      meds.forEach(med => {
-        const isOut = parseInt(med.quantity) === 0;
-        const col = document.createElement('div');
-        col.className = "col-md-4"; // 3 items per row
-
-        col.innerHTML = `
-                    <div class="medicine-card ${isOut ? 'out-of-stock' : ''}"
-                         onclick="${!isOut ? `addToCart(${med.medicine_id}, '${escapeHtml(med.name)}', ${med.unit_price})` : ''}">
-                        <div class="price-tag">P${parseFloat(med.unit_price).toFixed(2)}</div>
-                        <div class="med-img-wrapper">
-                            <img src="assets/img/${med.img}" alt="${med.name}" onerror="this.src='https://via.placeholder.com/150/ffffff/000000?text=Medicine'">
-                        </div>
-                        <div class="med-info">
-                            <h5 class="med-name">${med.name}</h5>
-                            <p class="card-text small text-white-50 mt-1" style="line-height:1.2; height: 35px; overflow:hidden;">${med.description || ""}</p>
-                            <small class="text-white">Stock: ${med.quantity}</small>
-                        </div>
-                    </div>
-                `;
-        grid.appendChild(col);
-      });
-    }
-
-    function filterMedicines(query) {
-      const cards = document.querySelectorAll('.medicine-card');
-      query = query.toLowerCase();
-      cards.forEach(card => {
-        const name = card.querySelector('.med-name').textContent.toLowerCase();
-        // Toggle visibility of the parent column
-        card.parentElement.style.display = name.includes(query) ? "block" : "none";
-      });
-    }
-
-    // --- Cart Logic ---
-    function addToCart(id, name, price) {
-      const existing = cart.find(item => item.medicine_id === id);
-      if (existing) existing.quantity++;
-      else cart.push({ medicine_id: id, name, price, quantity: 1 });
-      renderCart();
-    }
-
-    function renderCart() {
-      const receipt = document.getElementById("receipt");
-      const totalEl = document.getElementById("totalValue");
-      const checkoutBtn = document.getElementById("checkoutBtn");
-
-      receipt.innerHTML = "";
-      let total = 0;
-
-      cart.forEach(item => {
-        const subtotal = item.price * item.quantity;
-        total += subtotal;
-        receipt.innerHTML += `
-                    <li class="d-flex justify-content-between align-items-center mb-2">
-                        <div>
-                            <strong>${item.name}</strong> <small>x${item.quantity}</small>
-                        </div>
-                        <div class="text-end">
-                            <span class="d-block fw-bold">P${subtotal.toFixed(2)}</span>
-                            <div class="btn-group btn-group-sm mt-1">
-                                <button class="btn btn-outline-secondary py-0" style="font-size:0.7rem" onclick="updateQty(${item.medicine_id}, -1)">-</button>
-                                <button class="btn btn-outline-secondary py-0" style="font-size:0.7rem" onclick="updateQty(${item.medicine_id}, 1)">+</button>
-                            </div>
-                        </div>
-                    </li>`;
-      });
-
-      totalEl.textContent = `P${total.toFixed(2)}`;
-
-      // Enable checkout only if cart has items AND info is locked (Done clicked)
-      checkoutBtn.disabled = !(cart.length > 0 && isInfoLocked);
-    }
-
-    function updateQty(id, change) {
-      const item = cart.find(i => i.medicine_id === id);
-      if (!item) return;
-      item.quantity += change;
-      if (item.quantity <= 0) cart = cart.filter(i => i.medicine_id !== id);
-      renderCart();
-    }
-
-    function clearCart() {
-      cart = [];
-      renderCart();
-    }
-
-    function confirmUserInfo() {
-      const inputs = ['userName', 'userContact', 'userAddress'].map(id => document.getElementById(id));
-      const btn = document.getElementById("infoToggleBtn");
-      const paymentNotice = document.getElementById("paymentNotice");
-      // const orderType = document.getElementById("orderType").value;
-
-      if (!isInfoLocked) {
-        if (inputs.some(input => !input.value.trim())) {
-          alert("Please fill all delivery fields.");
-          return;
-        }
-        inputs.forEach(input => input.disabled = true);
-        btn.textContent = "Edit";
-        btn.className = "btn btn-outline-primary btn-sm w-100 mt-2";
-        paymentNotice.textContent = "Mode of Payment: Paypal";
-        isInfoLocked = true;
       } else {
-        inputs.forEach(input => input.disabled = false);
-        btn.textContent = "Done";
-        btn.className = "btn btn-done btn-sm w-100 mt-2";
-        isInfoLocked = false;
+        listEl.innerHTML = "<li class='category-item'>No Categories</li>";
       }
-      renderCart(); // Re-check button state
+    } catch (err) {
+      console.error("Error categories", err);
     }
+  }
 
-    function checkout() {
-      if (cart.length === 0) return;
-      const checkoutData = {
-        cart: cart,
-        username: document.getElementById("userName").value,
-        contact: document.getElementById("userContact").value,
-        address: document.getElementById("userAddress").value,
-        orderType: document.getElementById("orderType").value
-      };
+  function selectCategory(id, element) {
+    document.getElementById("navbarSearch").value = "";
+    
+    document.querySelectorAll('.category-item').forEach(el => el.classList.remove('active'));
+    element.classList.add('active');
+    currentCategoryId = id;
+    loadMedicines(id);
+  }
 
-      fetch('checkout.php', {
+  // --- Medicine Logic ---
+  async function loadMedicines(catId) {
+    const grid = document.getElementById("medicineGrid");
+    const spinner = document.getElementById("loadingMeds");
+    grid.innerHTML = "";
+    spinner.style.display = "block";
+
+    try {
+      const res = await fetch('medicines.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(checkoutData)
-      })
-        .then(res => res.json())
-        .then(data => {
-          if (data.success) {
-            alert("Order placed successfully!");
-            clearCart();
-            loadMedicines(currentCategoryId);
-          } else {
-            alert("Failed: " + data.message);
-          }
-        })
-        .catch(e => {
-          console.error(e);
-          alert("Error connecting to server.");
-        });
+        body: JSON.stringify({ category_id: catId })
+      });
+      const medicines = await res.json();
+      spinner.style.display = "none";
+      renderMedicines(medicines);
+    } catch (err) {
+      spinner.style.display = "none";
+      grid.innerHTML = "<p class='text-muted'>Error loading medicines.</p>";
+    }
+  }
+
+  async function globalSearchMedicines(query) {
+    const grid = document.getElementById("medicineGrid");
+    const spinner = document.getElementById("loadingMeds");
+
+    document.querySelectorAll('.category-item').forEach(el => el.classList.remove('active'));
+
+    grid.innerHTML = "";
+    spinner.style.display = "block";
+
+    try {
+      const res = await fetch('medicines.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ search: query })
+      });
+      const medicines = await res.json();
+      spinner.style.display = "none";
+      renderMedicines(medicines);
+    } catch (err) {
+      spinner.style.display = "none";
+      grid.innerHTML = "<p class='text-muted text-center col-12'>Error performing search.</p>";
+    }
+  }
+
+  function renderMedicines(meds) {
+    const grid = document.getElementById("medicineGrid");
+    grid.innerHTML = "";
+
+    if (!meds || meds.length === 0) {
+      grid.innerHTML = "<p class='text-center text-muted col-12 mt-5'>No medicines found matching that search.</p>";
+      return;
     }
 
-    function escapeHtml(text) {
-      if (!text) return "";
-      return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+    meds.forEach(med => {
+      const isOut = parseInt(med.quantity) === 0;
+      const col = document.createElement('div');
+      col.className = "col-md-4";
+      col.innerHTML = `
+        <div class="medicine-card ${isOut ? 'out-of-stock' : ''}"
+             onclick="${!isOut ? `addToCart(${med.medicine_id}, '${escapeHtml(med.name)}', ${med.unit_price})` : ''}">
+            <div class="price-tag">P${parseFloat(med.unit_price).toFixed(2)}</div>
+            <div class="med-img-wrapper">
+                <img src="assets/img/${med.img}" alt="${med.name}" onerror="this.src='https://via.placeholder.com/150/ffffff/000000?text=Medicine'">
+            </div>
+            <div class="med-info">
+                <h5 class="med-name">${med.name}</h5>
+                <p class="card-text small text-white-50 mt-1" style="line-height:1.2; overflow:hidden; margin-bottom: 0px;">${med.description || ""}</p>
+                <small class="text-white">Stock: ${med.quantity}</small>
+            </div>
+        </div>
+      `;
+      grid.appendChild(col);
+    });
+  }
+
+  // --- Cart & Other Logic ---
+  function addToCart(id, name, price) {
+    const existing = cart.find(item => item.medicine_id === id);
+    if (existing) existing.quantity++;
+    else cart.push({ medicine_id: id, name, price, quantity: 1 });
+    renderCart();
+  }
+
+  function renderCart() {
+    const receipt = document.getElementById("receipt");
+    const totalEl = document.getElementById("totalValue");
+    const checkoutBtn = document.getElementById("checkoutBtn");
+    receipt.innerHTML = "";
+    let total = 0;
+
+    cart.forEach(item => {
+      const subtotal = item.price * item.quantity;
+      total += subtotal;
+      receipt.innerHTML += `
+        <li class="d-flex justify-content-between align-items-center mb-2">
+            <div><strong>${item.name}</strong> <small>x${item.quantity}</small></div>
+            <div class="text-end">
+                <span class="d-block fw-bold">P${subtotal.toFixed(2)}</span>
+                <div class="btn-group btn-group-sm mt-1">
+                    <button class="btn btn-outline-secondary py-0" style="font-size:0.7rem" onclick="updateQty(${item.medicine_id}, -1)">-</button>
+                    <button class="btn btn-outline-secondary py-0" style="font-size:0.7rem" onclick="updateQty(${item.medicine_id}, 1)">+</button>
+                </div>
+            </div>
+        </li>`;
+    });
+    totalEl.textContent = `P${total.toFixed(2)}`;
+    checkoutBtn.disabled = !(cart.length > 0 && isInfoLocked);
+  }
+
+  function updateQty(id, change) {
+    const item = cart.find(i => i.medicine_id === id);
+    if (!item) return;
+    item.quantity += change;
+    if (item.quantity <= 0) cart = cart.filter(i => i.medicine_id !== id);
+    renderCart();
+  }
+
+  function clearCart() {
+    cart = [];
+    renderCart();
+  }
+
+  function confirmUserInfo() {
+    const inputs = ['userName', 'userContact', 'userAddress'].map(id => document.getElementById(id));
+    const btn = document.getElementById("infoToggleBtn");
+    const paymentNotice = document.getElementById("paymentNotice");
+
+    if (!isInfoLocked) {
+      if (inputs.some(input => !input.value.trim())) {
+        alert("Please fill all delivery fields.");
+        return;
+      }
+      inputs.forEach(input => input.disabled = true);
+      btn.textContent = "Edit";
+      btn.className = "btn btn-outline-primary btn-sm w-100 mt-2";
+      isInfoLocked = true;
+    } else {
+      inputs.forEach(input => input.disabled = false);
+      btn.textContent = "Done";
+      btn.className = "btn btn-done btn-sm w-100 mt-2";
+      isInfoLocked = false;
     }
-  </script>
-</body>
+    renderCart();
+  }
+
+  function checkout() {
+    if (cart.length === 0) return;
+    const checkoutData = {
+      cart: cart,
+      username: document.getElementById("userName").value,
+      contact: document.getElementById("userContact").value,
+      address: document.getElementById("userAddress").value,
+      orderType: document.getElementById("orderType").value
+    };
+
+    fetch('checkout.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(checkoutData)
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        alert("Order placed successfully!");
+        clearCart();
+        if (currentCategoryId) loadMedicines(currentCategoryId);
+      } else {
+        alert("Failed: " + data.message);
+      }
+    })
+    .catch(e => alert("Error connecting to server."));
+  }
+
+  function escapeHtml(text) {
+    if (!text) return "";
+    return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+  }
+</script></body>
 
 </html>
