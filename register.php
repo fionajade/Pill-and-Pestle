@@ -10,19 +10,20 @@ $error = "";
 
 if (isset($_POST['btnRegister'])) {
     $username = str_replace("'", "", $_POST['username']);
+    $email = str_replace("'", "", $_POST['email']);
     $contact = str_replace("'", "", $_POST['contact']);
     $address = str_replace("'", "", $_POST['address']);
     $password = str_replace("'", "", $_POST['password']);
 
-    $checkQuery = "SELECT * FROM tbl_user WHERE username = '$username'";
+    $checkQuery = "SELECT * FROM tbl_user WHERE email = '$email'";
     $checkResult = executeQuery($checkQuery);
 
     if (mysqli_num_rows($checkResult) > 0) {
         header("Location: register.php?error=exists");
         exit();
     } else {
-        $insertQuery = "INSERT INTO tbl_user (username, password, address, contact, role)
-                        VALUES ('$username', '$password', '$address', '$contact', 'user')";
+        $insertQuery = "INSERT INTO tbl_user (username, email, password, address, contact, role)
+                        VALUES ('$username', '$email', '$password', '$address', '$contact', 'user')";
         executeQuery($insertQuery);
         header("Location: login.php");
         exit();
@@ -32,6 +33,7 @@ if (isset($_POST['btnRegister'])) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -40,80 +42,8 @@ if (isset($_POST['btnRegister'])) {
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="shared/css/login.css" rel="stylesheet">
-    <!-- <style>
-        body, html {
-            height: 100%;
-            margin: 0;
-            overflow: hidden;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        .container-wrapper {
-            display: flex;
-            height: 100vh;
-            width: 100vw;
-
-        }
-
-        .video-side {
-            flex: 1;
-            position: relative;
-        }
-
-        .video-side video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .form-side {
-            width: 500px;
-            max-width: 100%;
-            background-color: #eef4f4;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-        }
-        .form-control {
-            font-family: 'Poppins', sans-serif;
-            border-radius: 2rem;
-        }
-
-        .btn-success {
-            font-family: 'Poppins', sans-serif;
-            border-radius: 2rem;
-        }
-
-        .register-card {
-            width: 100%;
-        }
-
-        .error-message {
-            color: red;
-            margin-top: 10px;
-            text-align: center;
-        }
-
-        @media (max-width: 768px) {
-            .container-wrapper {
-                flex-direction: column;
-            }
-
-            .video-side {
-                height: 50vh;
-            }
-
-            .form-side {
-                width: 100%;
-                height: auto;
-            }
-        }
-    </style> -->
 </head>
 <body>
-
-    <!-- 🔵 Left Video Panel -->
     <div class="video-side">
         <video autoplay muted loop>
             <source src="assets/start_video.mp4" type="video/mp4">
@@ -121,7 +51,6 @@ if (isset($_POST['btnRegister'])) {
         </video>
     </div>
 
-    <!-- 🟢 Right Registration Form -->
     <div class="form-overlay">
         <div class="register-card">
             <h3 class="text-center mb-4">Register for MediTrack</h3>
@@ -131,8 +60,8 @@ if (isset($_POST['btnRegister'])) {
                     <input type="text" name="username" class="form-control" id="username" required />
                 </div>
                 <div class="mb-3">
-                    <label for="contact" class="form-label">Email Address</label>
-                    <input type="email" name="contact" class="form-control" id="contact" required />
+                    <label for="email" class="form-label">Email Address</label>
+                    <input type="email" name="email" class="form-control" id="email" required />
                 </div>
                 <div class="mb-3">
                     <label for="contact" class="form-label">Contact Number</label>
@@ -147,7 +76,7 @@ if (isset($_POST['btnRegister'])) {
                     <input type="password" name="password" class="form-control" id="password" required />
                 </div>
                 <?php if (isset($_GET['error']) && $_GET['error'] === 'exists'): ?>
-                    <div class="error-message">Username already exists. Please choose another.</div>
+                    <div class="error-message">Email Address already exists. Please choose another.</div>
                 <?php endif; ?>
                 <button type="submit" name="btnRegister" class="btn btn-primary w-100">Register</button>
             </form>
@@ -157,6 +86,7 @@ if (isset($_POST['btnRegister'])) {
         </div>
     </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
