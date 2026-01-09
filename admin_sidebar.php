@@ -10,12 +10,14 @@ $current_page = basename($_SERVER['PHP_SELF']);
 
     <ul class="nav-links">
         <li class="nav-item">
-            <a href="admin_dashboard.php" class="nav-link <?= ($current_page == 'admin_dashboard.php') ? 'active' : '' ?>">
+            <a href="admin_dashboard.php"
+                class="nav-link <?= ($current_page == 'admin_dashboard.php') ? 'active' : '' ?>">
                 Home
             </a>
         </li>
         <li class="nav-item">
-            <a href="medicines_stock.php" class="nav-link <?= ($current_page == 'medicines_stock.php') ? 'active' : '' ?>">
+            <a href="medicines_stock.php"
+                class="nav-link <?= ($current_page == 'medicines_stock.php') ? 'active' : '' ?>">
                 Medicine Stock
             </a>
         </li>
@@ -27,6 +29,11 @@ $current_page = basename($_SERVER['PHP_SELF']);
         <li class="nav-item">
             <a href="statistics.php" class="nav-link <?= ($current_page == 'statistics.php') ? 'active' : '' ?>">
                 Statistics
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="reviews.php" class="nav-link <?= ($current_page == 'reviews.php') ? 'active' : '' ?>">
+                Reviews
             </a>
         </li>
     </ul>
