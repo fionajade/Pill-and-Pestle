@@ -12,28 +12,94 @@ if ($conn->connect_error) {
 
 /* ---------------- CONFIG ---------------- */
 $NO_DATA_RESPONSE = "Sorry, I cannot answer that question based on the available medicine information.";
+$OLLAMA_API_URL = 'http://127.0.0.1:11434/api/chat';
+$MODEL = 'gemma3:270m';
+$OLLAMA_TIMEOUT = 30;
+
 
 /* ---------------- MEDICINE KEYWORDS ---------------- */
 $medicineKeywords = [
-    'ibuprofen','acetaminophen','paracetamol','aspirin','naproxen','diclofenac',
-    'tramadol','morphine','codeine','ketorolac',
-    'penicillin','amoxicillin','ciprofloxacin','doxycycline','azithromycin',
-    'cephalexin','clindamycin','erythromycin','metronidazole',
-    'fluoxetine','sertraline','citalopram','paroxetine','venlafaxine',
-    'duloxetine','bupropion','amitriptyline','escitalopram',
-    'insulin','metformin','glipizide','glyburide','pioglitazone',
-    'sitagliptin','empagliflozin','liraglutide','acarbose',
-    'phenytoin','lamotrigine','valproic acid','carbamazepine',
-    'levetiracetam','topiramate','gabapentin','clonazepam','phenobarbital',
-    'haloperidol','risperidone','olanzapine','quetiapine','aripiprazole',
-    'clozapine','chlorpromazine','ziprasidone','lurasidone',
-    'acyclovir','oseltamivir','valacyclovir','remdesivir',
-    'zidovudine','sofosbuvir','lamivudine','abacavir','tenofovir',
-    'warfarin','heparin','enoxaparin','dabigatran','apixaban',
-    'rivaroxaban','fondaparinux','edoxaban',
-    'diphenhydramine','loratadine','cetirizine','fexofenadine',
-    'chlorpheniramine','hydroxyzine','levocetirizine',
-    'desloratadine','promethazine'
+    'ibuprofen',
+    'acetaminophen',
+    'paracetamol',
+    'aspirin',
+    'naproxen',
+    'diclofenac',
+    'tramadol',
+    'morphine',
+    'codeine',
+    'ketorolac',
+    'penicillin',
+    'amoxicillin',
+    'ciprofloxacin',
+    'doxycycline',
+    'azithromycin',
+    'cephalexin',
+    'clindamycin',
+    'erythromycin',
+    'metronidazole',
+    'fluoxetine',
+    'sertraline',
+    'citalopram',
+    'paroxetine',
+    'venlafaxine',
+    'duloxetine',
+    'bupropion',
+    'amitriptyline',
+    'escitalopram',
+    'insulin',
+    'metformin',
+    'glipizide',
+    'glyburide',
+    'pioglitazone',
+    'sitagliptin',
+    'empagliflozin',
+    'liraglutide',
+    'acarbose',
+    'phenytoin',
+    'lamotrigine',
+    'valproic acid',
+    'carbamazepine',
+    'levetiracetam',
+    'topiramate',
+    'gabapentin',
+    'clonazepam',
+    'phenobarbital',
+    'haloperidol',
+    'risperidone',
+    'olanzapine',
+    'quetiapine',
+    'aripiprazole',
+    'clozapine',
+    'chlorpromazine',
+    'ziprasidone',
+    'lurasidone',
+    'acyclovir',
+    'oseltamivir',
+    'valacyclovir',
+    'remdesivir',
+    'zidovudine',
+    'sofosbuvir',
+    'lamivudine',
+    'abacavir',
+    'tenofovir',
+    'warfarin',
+    'heparin',
+    'enoxaparin',
+    'dabigatran',
+    'apixaban',
+    'rivaroxaban',
+    'fondaparinux',
+    'edoxaban',
+    'diphenhydramine',
+    'loratadine',
+    'cetirizine',
+    'fexofenadine',
+    'chlorpheniramine',
+    'hydroxyzine',
+    'levocetirizine',
+    'desloratadine',
+    'promethazine'
 ];
 
 /* ---------------- CATEGORY MAP ---------------- */
@@ -64,30 +130,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
+    // Normalize input
     $msg = strtolower($userMsg);
+    $msg = preg_replace('/[^a-z0-9\s]/', '', $msg);
+    $msg = trim(preg_replace('/\s+/', ' ', $msg));
+
     $searchMode = null;
     $searchValue = null;
 
-    /* ---------- 1. DIRECT MEDICINE MATCH ---------- */
+    /* ---------- 1. DIRECT MEDICINE MATCH WITH FUZZY (FIXED) ---------- */
+    $msgWords = explode(' ', $msg);
+
     foreach ($medicineKeywords as $med) {
-        if (strpos($msg, strtolower($med)) !== false) {
-            $searchMode = 'medicine';
-            $searchValue = $med;
-            break;
+        $medLower = strtolower($med);
+
+        foreach ($msgWords as $word) {
+            if (
+                $word === $medLower ||
+                levenshtein($word, $medLower) <= 1
+            ) {
+                $searchMode = 'medicine';
+                $searchValue = $med;
+                break 2;
+            }
         }
     }
 
-    /* ---------- 2. DIRECT CATEGORY MATCH ---------- */
+    /* ---------- 2. DIRECT CATEGORY MATCH (FIXED) ---------- */
     if ($searchMode === null) {
-        $categories = [
-            'analgesics','antibiotics','antidepressants','antidiabetics',
-            'antiepileptics','antipsychotics','antivirals',
-            'anticoagulants','antihistamines'
-        ];
-        foreach ($categories as $cat) {
-            if (strpos($msg, $cat) !== false) {
+        $validCategories = array_unique(array_values($categoryMap));
+
+        foreach ($validCategories as $catName) {
+            if (strpos($msg, strtolower($catName)) !== false) {
                 $searchMode = 'category';
-                $searchValue = ucfirst($cat); // database uses capitalized first letter
+                $searchValue = $catName;
                 break;
             }
         }
@@ -108,9 +184,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $medicines = [];
     if ($searchMode !== null) {
         if ($searchMode === 'medicine') {
-            $stmt = $conn->prepare(
-                "SELECT name, brand, description FROM medicines WHERE LOWER(name) LIKE ?"
-            );
+            $stmt = $conn->prepare("SELECT name, brand, description FROM medicines WHERE LOWER(name) LIKE ?");
             $like = '%' . strtolower($searchValue) . '%';
             $stmt->bind_param("s", $like);
         } else {
@@ -126,6 +200,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute();
         $res = $stmt->get_result();
         while ($row = $res->fetch_assoc()) {
+            if (!empty($row['brand'])) {
+                $row['brand'] = trim(preg_replace('/[\(\)]/', '', $row['brand']));
+            }
             $medicines[] = $row;
         }
         $stmt->close();
@@ -135,48 +212,78 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!empty($medicines)) {
         $friendlyOutput = '';
         if ($searchMode === 'medicine') {
-            $med = $medicines[0]; // single medicine
+            $med = $medicines[0];
             $brandText = $med['brand'] ? " ({$med['brand']})" : '';
             $descText = $med['description'] ? " – {$med['description']}" : '';
             $friendlyOutput = "Here is the information for <strong>{$med['name']}</strong>{$brandText}: {$descText}";
         } else {
-            $friendlyOutput = "Here are the medicines in the <strong>{$searchValue}</strong> category:\n";
+            $friendlyOutput = "Here are the medicines in the <strong>{$searchValue}</strong> category:<br>";
             foreach ($medicines as $i => $med) {
                 $brandText = $med['brand'] ? " ({$med['brand']})" : '';
                 $descText = $med['description'] ? " – {$med['description']}" : '';
                 $friendlyOutput .= ($i + 1) . ". <strong>{$med['name']}</strong>{$brandText}{$descText}<br>";
             }
         }
-        $output = $friendlyOutput;
+        $dbOutput = $friendlyOutput;
     } else {
-        $output = $NO_DATA_RESPONSE;
+        echo json_encode([
+            'ok' => true,
+            'reply' => $NO_DATA_RESPONSE
+        ]);
+        exit;
     }
 
     /* ---------- 6. SYSTEM PROMPT FOR AI ---------- */
     $systemPrompt = [
         'role' => 'system',
         'content' =>
-            "You are a friendly and helpful medicine assistant AI.\n" .
-            "Use the information provided below to answer the user.\n" .
-            "Always format your answers in clear, human-readable sentences or lists.\n" .
-            "Do NOT provide medical advice outside this database.\n\n" .
+            "You are a medicine information assistant.\n" .
+            "ONLY use the medicine database provided below.\n" .
+            "If the database does not contain the answer, repeat it clearly.\n" .
+            "Do NOT add medical advice or new information.\n\n" .
             "---- MEDICINE DATABASE ----\n" .
-            "$output\n" .
+            "$dbOutput\n" .
             "---- END DATABASE ----"
     ];
 
+    /* ---------- 7. CALL OLLAMA AI WITH STREAM-FRIENDLY PARSING ---------- */
+    $postData = json_encode([
+        'model' => $MODEL,
+        'messages' => [
+            $systemPrompt,
+            ['role' => 'user', 'content' => $userMsg]
+        ]
+    ]);
+
+    $ch = curl_init($OLLAMA_API_URL);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+    curl_setopt($ch, CURLOPT_TIMEOUT, $OLLAMA_TIMEOUT);
+
+    $result = curl_exec($ch);
+    if ($result !== false) {
+        // Ollama streams multiple JSON lines, so we merge content
+        $lines = explode("\n", $result);
+        $aiReply = '';
+        foreach ($lines as $line) {
+            $jsonLine = json_decode($line, true);
+            if ($jsonLine && isset($jsonLine['message']['content'])) {
+                $aiReply .= $jsonLine['message']['content'];
+            }
+        }
+    }
+    curl_close($ch);
+
     echo json_encode([
         'ok' => true,
-        'reply' => trim($output),
-        'systemPrompt' => $systemPrompt
+        'reply' => trim($aiReply)
     ]);
     exit;
 }
 
 $conn->close();
 ?>
-
-
 
 
 <!-- ================= CHATBOT UI ================= -->
@@ -349,8 +456,10 @@ $conn->close();
     function appendMessage(role, text) {
         if (!text) return;
 
-        // Replace newlines with <br> for HTML display
-        const formattedText = text
+        // Allow only safe tags
+        const allowed = text.replace(/<(?!\/?(strong|br)\b)[^>]*>/gi, '');
+
+        const formattedText = allowed
             .split('\n')
             .map(line => line.trim())
             .filter(line => line !== '')
@@ -363,7 +472,6 @@ $conn->close();
 
         chatBox.scrollTop = chatBox.scrollHeight;
     }
-
 
     async function handleChat() {
         const msg = chatInput.value.trim();
@@ -394,7 +502,6 @@ $conn->close();
             appendMessage("bot", "Unable to connect.");
         }
     }
-
 
     sendBtn.onclick = handleChat;
     chatInput.onkeydown = e => {
