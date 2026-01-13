@@ -1,0 +1,244 @@
+[2026-01-12 12:00:59]
+[2026-01-12 12:03:20]
+[2026-01-12 12:14:16] FROM: 123456789 MESSAGE: test message RAW: {
+  "from":"123456789",
+  "text":"test message",
+  "sentStamp":1768216454434,
+  "receivedStamp":1768216454435,
+  "sim":"sim1"
+}
+[2026-01-12 12:14:25] FROM: +639166314087 MESSAGE: test  RAW: {
+  "from":"+639166314087",
+  "text":"test ",
+  "sentStamp":1768216463000,
+  "receivedStamp":1768216463657,
+  "sim":"sim1"
+}
+[2026-01-12 12:15:14] FROM: 123456789 MESSAGE: test message RAW: {
+  "from":"123456789",
+  "text":"test message",
+  "sentStamp":1768216512031,
+  "receivedStamp":1768216512032,
+  "sim":"sim1"
+}
+[2026-01-12 12:15:35] FROM: Unknown MESSAGE: No Message RAW:
+[2026-01-12 12:18:12] FROM: +639664685409 MESSAGE: thank u sm pu ^^ RAW: {
+  "from":"+639664685409",
+  "text":"thank u sm pu ^^",
+  "sentStamp":1768216690000,
+  "receivedStamp":1768216690160,
+  "sim":"sim1"
+}
+[2026-01-12 12:31:51] FROM: 123456789 MESSAGE: test message RAW: {
+  "from":"123456789",
+  "text":"test message",
+  "sentStamp":1768217509467,
+  "receivedStamp":1768217509468,
+  "sim":"sim1"
+}
+[2026-01-12 12:32:34] FROM: +639166314087 MESSAGE: Test RAW: {
+  "from":"+639166314087",
+  "text":"Test",
+  "sentStamp":1768217552000,
+  "receivedStamp":1768217552374,
+  "sim":"sim1"
+}
+[2026-01-12 12:33:20] FROM: +639166314087 MESSAGE: Test  ORDER_ID:  RAW: {
+  "from":"+639166314087",
+  "text":"Test ",
+  "sentStamp":1768217599000,
+  "receivedStamp":1768217598508,
+  "sim":"sim1"
+}
+[2026-01-12 12:37:35] FROM: +639166314087 MESSAGE: Your transaction was successful. Thank you for using our service. ORDER_ID:  RAW: {
+  "from":"+639166314087",
+  "text":"Your transaction was successful. Thank you for using our service.",
+  "sentStamp":1768217852000,
+  "receivedStamp":1768217853212,
+  "sim":"sim1"
+}
+[2026-01-12 12:43:55] FROM: +639703177169 MESSAGE: Aba saan kanpa sasakay? Saan ka ng covide ORDER_ID:  RAW: {
+  "from":"+639703177169",
+  "text":"Aba saan kanpa sasakay? Saan ka ng covide",
+  "sentStamp":1768218232000,
+  "receivedStamp":1768218232781,
+  "sim":"sim1"
+}
+[2026-01-12 12:46:28] FROM: +639166314087 MESSAGE: test message  ORDER_ID:  RAW: {
+  "from":"+639166314087",
+  "text":"test message ",
+  "sentStamp":1768218386000,
+  "receivedStamp":1768218385926,
+  "sim":"sim1"
+}
+[2026-01-12 13:00:12] FROM: +639166314087 MESSAGE: Your transaction was successful. Thank you for using our service. ORDER_ID:  RAW: {
+  "from":"+639166314087",
+  "text":"Your transaction was successful. Thank you for using our service.",
+  "sentStamp":1768219209000,
+  "receivedStamp":1768219210425,
+  "sim":"sim1"
+}
+[2026-01-12 13:18:11] FROM: 123456789 MESSAGE: test message ORDER_ID:  RAW: {
+  "from":"123456789",
+  "text":"test message",
+  "sentStamp":1768220289261,
+  "receivedStamp":1768220289262,
+  "sim":"sim1"
+}
+[2026-01-12 13:18:21] FROM: +639166314087 MESSAGE: test ORDER_ID:  RAW: {
+  "from":"+639166314087",
+  "text":"test",
+  "sentStamp":1768220298000,
+  "receivedStamp":1768220299249,
+  "sim":"sim1"
+}
+[2026-01-12 13:20:24] FAILED: FROM: +639166314087 MESSAGE: Test RAW: {
+  "from":"+639166314087",
+  "text":"Test",
+  "sentStamp":1768220422000,
+  "receivedStamp":1768220422014,
+  "sim":"sim1"
+}
+[2026-01-12 13:20:34] FAILED: FROM: +639166314087 MESSAGE: Test RAW: {
+  "from":"+639166314087",
+  "text":"Test",
+  "sentStamp":1768220422000,
+  "receivedStamp":1768220422014,
+  "sim":"sim1"
+}
+[2026-01-12 13:20:55] FAILED: FROM: +639166314087 MESSAGE: Test RAW: {
+  "from":"+639166314087",
+  "text":"Test",
+  "sentStamp":1768220422000,
+  "receivedStamp":1768220422014,
+  "sim":"sim1"
+}
+[2026-01-12 13:21:35] FAILED: FROM: +639166314087 MESSAGE: Test RAW: {
+  "from":"+639166314087",
+  "text":"Test",
+  "sentStamp":1768220422000,
+  "receivedStamp":1768220422014,
+  "sim":"sim1"
+}
+[2026-01-12 13:22:55] FAILED: FROM: +639166314087 MESSAGE: Test RAW: {
+  "from":"+639166314087",
+  "text":"Test",
+  "sentStamp":1768220422000,
+  "receivedStamp":1768220422014,
+  "sim":"sim1"
+}
+[2026-01-12 13:25:36] FAILED: FROM: +639166314087 MESSAGE: Test RAW: {
+  "from":"+639166314087",
+  "text":"Test",
+  "sentStamp":1768220422000,
+  "receivedStamp":1768220422014,
+  "sim":"sim1"
+}
+[2026-01-12 13:44:47] FAILED: FROM: +639166314087 MESSAGE: Test RAW: {
+  "from":"+639166314087",
+  "text":"Test",
+  "sentStamp":1768220422000,
+  "receivedStamp":1768220422014,
+  "sim":"sim1"
+}
+[2026-01-12 13:44:51] FAILED: FROM: 123456789 MESSAGE: test message RAW: {
+  "from":"123456789",
+  "text":"test message",
+  "sentStamp":1768221888694,
+  "receivedStamp":1768221888694,
+  "sim":"sim1"
+}
+[2026-01-12 13:44:53] FAILED: FROM: 123456789 MESSAGE: test message RAW: {
+  "from":"123456789",
+  "text":"test message",
+  "sentStamp":1768221891294,
+  "receivedStamp":1768221891294,
+  "sim":"sim1"
+}
+[2026-01-12 13:45:02] FAILED: FROM: 123456789 MESSAGE: test message RAW: {
+  "from":"123456789",
+  "text":"test message",
+  "sentStamp":1768221899662,
+  "receivedStamp":1768221899663,
+  "sim":"sim1"
+}
+[2026-01-12 13:52:13] FROM: 123456789 MESSAGE: test message RAW: {
+  "from":"123456789",
+  "text":"test message",
+  "sentStamp":1768222331467,
+  "receivedStamp":1768222331468,
+  "sim":"sim1"
+}
+[2026-01-12 13:55:27] FROM: +639166314087 MESSAGE: Test RAW: {
+  "from":"+639166314087",
+  "text":"Test",
+  "sentStamp":1768220422000,
+  "receivedStamp":1768220422014,
+  "sim":"sim1"
+}
+[2026-01-12 13:56:12] FROM: 123456789 MESSAGE: test message RAW: {
+  "from":"123456789",
+  "text":"test message",
+  "sentStamp":1768222569857,
+  "receivedStamp":1768222569857,
+  "sim":"sim1"
+}
+[2026-01-12 13:57:30] FROM: 123456789 MESSAGE: test message RAW: {
+  "from":"123456789",
+  "text":"test message",
+  "sentStamp":1768222647879,
+  "receivedStamp":1768222647879,
+  "sim":"sim1"
+}
+[2026-01-12 18:56:34] FROM: Unknown MESSAGE: No Message RAW: 
+[2026-01-12 19:20:34] FROM: Unknown MESSAGE: No Message RAW: 
+[2026-01-12 19:27:05] FROM: Unknown MESSAGE: No Message RAW: 
+[2026-01-12 19:37:49] FROM: 123456789 MESSAGE: test message ORDER_ID:  RAW: {
+  "from":"123456789",
+  "text":"test message",
+  "sentStamp":1768243066521,
+  "receivedStamp":1768243066522,
+  "sim":"sim1"
+}
+[2026-01-12 19:39:23] FROM: +639166314087 MESSAGE: test ORDER_ID:  RAW: {
+  "from":"+639166314087",
+  "text":"test",
+  "sentStamp":1768243160000,
+  "receivedStamp":1768243160184,
+  "sim":"sim1"
+}
+[2026-01-13 06:35:25] FROM: 123456789 MESSAGE: test message ORDER_ID:  RAW: {
+  "from":"123456789",
+  "text":"test message",
+  "sentStamp":1768282522354,
+  "receivedStamp":1768282522355,
+  "sim":"sim1"
+}
+[2026-01-13 06:48:46] FROM: +639166314087 MESSAGE: Your transaction was successful. Thank you for using our service. ORDER_ID:  RAW: {
+  "from":"+639166314087",
+  "text":"Your transaction was successful. Thank you for using our service.",
+  "sentStamp":1768283321000,
+  "receivedStamp":1768283323043,
+  "sim":"sim1"
+}
+[2026-01-13 06:49:22] FROM: +639166314087 MESSAGE: test reply  ORDER_ID:  RAW: {
+  "from":"+639166314087",
+  "text":"test reply ",
+  "sentStamp":1768283359000,
+  "receivedStamp":1768283358856,
+  "sim":"sim1"
+}
+[2026-01-13 09:35:52] FROM: +639166314087 MESSAGE: Your transaction was successful. Thank you for using our service. ORDER_ID:  PAYMENT_ID:  RAW: {
+  "from":"+639166314087",
+  "text":"Your transaction was successful. Thank you for using our service.",
+  "sentStamp":1768293349000,
+  "receivedStamp":1768293349341,
+  "sim":"sim1"
+}
+[2026-01-13 09:36:15] FROM: +639166314087 MESSAGE: test reply ORDER_ID:  PAYMENT_ID:  RAW: {
+  "from":"+639166314087",
+  "text":"test reply",
+  "sentStamp":1768293373000,
+  "receivedStamp":1768293372717,
+  "sim":"sim1"
+}
