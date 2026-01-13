@@ -1,0 +1,25 @@
+/* edit_account.css */
+
+/* Basic styling for edit account page */
+.edit-account-container {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    border-radius: 15px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.edit-account-container h2 {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.edit-account-container form input,
+.edit-account-container form button {
+    width: 100%;
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
