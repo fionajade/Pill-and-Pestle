@@ -1,203 +1,100 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Receipt - MediTrack</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+<html>
 
-        body {
-            background-color: #e0e0e0;
-            font-family: 'VT323', monospace;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-        }
+<body style="margin:0;padding:0;background:#f2f2f2;font-family:Arial,Helvetica,sans-serif;">
 
-        .receipt-container {
-            background-color: #fff;
-            width: 320px;
-            padding: 20px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            margin: 20px;
-        }
+    <table width="100%" cellpadding="0" cellspacing="0" style="padding:20px;">
+        <tr>
+            <td align="center">
 
-        .receipt-header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
+                <table width="360" cellpadding="0" cellspacing="0"
+                    style="background:#ffffff;border-radius:6px;padding:20px;">
 
-        .logo-area {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
+                    <tr>
+                        <td align="center">
+                            <h2 style="margin:0;color:#052241;">Pill and Pestle</h2>
+                            <p style="font-size:12px;color:#555;">
+                                {{date}} {{time}}<br>
+                                123 Health St., Makati City<br>
+                                +63 912 345 6789
+                            </p>
+                        </td>
+                    </tr>
 
-        .logo-icon {
-            font-size: 2rem;
-            color: #001f3f;
-        }
+                    <tr>
+                        <td style="border-top:1px solid #ddd;"></td>
+                    </tr>
 
-        .store-name {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: #000;
-            margin: 0;
-            text-transform: uppercase;
-        }
+                    <tr>
+                        <td style="font-size:13px;padding:10px 0;">
+                            <strong>Order #:</strong> {{orderID}}
+                        </td>
+                    </tr>
 
-        .store-info {
-            font-size: 1.1rem;
-            color: #333;
-            line-height: 1.2;
-        }
+                    <tr>
+                        <td style="font-size:13px;">
+                            <strong>Customer:</strong> {{customerName}}<br>
+                            <strong>Contact:</strong> {{contact}}<br>
+                            <strong>Address:</strong> {{address}}
+                        </td>
+                    </tr>
 
-        .meta-data {
-            display: flex;
-            justify-content: space-between;
-            font-size: 1rem;
-            margin-bottom: 5px;
-            text-transform: uppercase;
-        }
+                    <tr>
+                        <td style="padding-top:10px;">
+                            <table width="100%" cellpadding="0" cellspacing="0"
+                                style="font-size:13px;border-collapse:collapse;">
+                                <tr>
+                                    <th align="left" width="60%" style="border-bottom:1px solid #ddd;">Item</th>
+                                    <th align="center" width="15%" style="border-bottom:1px solid #ddd;">Qty</th>
+                                    <th align="right" width="25%" style="border-bottom:1px solid #ddd;">Price</th>
+                                </tr>
+                                {{itemsTable}}
+                            </table>
+                        </td>
+                    </tr>
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 15px;
-            font-size: 1.2rem;
-        }
+                    <tr>
+                        <td style="padding:10px 0;">
+                            <table width="100%" cellpadding="0" cellspacing="0" style="font-size:13px;">
+                                <tr>
+                                    <td width="45%"><strong>Payment Method</strong></td>
+                                    <td width="55%" align="right">{{payment_method}}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Payment ID</strong></td>
+                                    <td align="right">{{payment_id}}</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
 
-        th, td {
-            text-align: left;
-            padding: 2px 0;
-        }
+                    <tr>
+                        <td style="border-top:1px dashed #ccc;"></td>
+                    </tr>
 
-        .qty-col { width: 10%; }
-        .item-col { width: 60%; }
-        .price-col { width: 30%; text-align: right; }
+                    <tr>
+                        <td style="font-size:14px;padding-top:10px;">
+                            <table width="100%">
+                                <tr>
+                                    <td><strong>Total</strong></td>
+                                    <td align="right"><strong>₱{{total}}</strong></td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
 
-        .totals {
-            border-top: 1px dashed #000;
-            padding-top: 10px;
-            margin-bottom: 15px;
-        }
+                    <tr>
+                        <td align="center" style="font-size:12px;color:#666;padding-top:10px;">
+                            Thank you for shopping with Pill and Pestle 💙<br>
+                            Stay healthy and take care!
+                        </td>
+                    </tr>
 
-        .total-row {
-            display: flex;
-            justify-content: space-between;
-            font-size: 1.2rem;
-            margin-bottom: 5px;
-        }
+                </table>
 
-        .total-row.final {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-top: 5px;
-        }
-
-        .delivery-info {
-            border-top: 1px dashed #000;
-            padding-top: 10px;
-            margin-bottom: 15px;
-            font-size: 1rem;
-        }
-
-        .footer {
-            text-align: center;
-            font-size: 1.1rem;
-            margin-top: 20px;
-            text-transform: uppercase;
-        }
-
-        .btn-print {
-            display: block;
-            width: 100%;
-            background-color: #001f3f;
-            color: white;
-            border: none;
-            padding: 10px;
-            font-family: sans-serif;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 20px;
-            border-radius: 5px;
-        }
-
-        @media print {
-            body { background-color: #fff; }
-            .btn-print { display: none; }
-            .receipt-container { box-shadow: none; margin: 0; }
-        }
-    </style>
-</head>
-<body>
-
-    <div class="receipt-container">
-
-        <!-- Header -->
-        <div class="receipt-header">
-            <div class="logo-area">
-                <h1 class="store-name">MediTrack</h1>
-            </div>
-            <div class="store-info">
-                {{date}} &nbsp; {{time}}<br>
-                123 Health St., Makati City, Philippines<br>
-                +63 912 345 6789
-            </div>
-        </div>
-
-        <!-- Transaction Details -->
-        <div class="meta-data">
-            <span>ORDER#{{orderID}}</span>
-        </div>
-
-        <!-- Customer Info -->
-        <div class="delivery-info">
-            <strong>Customer:</strong> {{customerName}}<br>
-            <strong>Contact:</strong> {{contact}}<br>
-            <strong>Address:</strong> {{address}}
-        </div>
-
-        <!-- Items -->
-        <table>
-            <tbody>
-                {{itemsTable}}
-            </tbody>
-        </table>
-
-        <div style="margin-bottom: 10px; font-size: 1rem;">
-            {{itemCount}} ITEM(S)
-        </div>
-
-        <!-- Totals -->
-        <div class="totals">
-            <div class="total-row final">
-                <span>TOTAL</span>
-                <span>₱{{total}}</span>
-            </div>
-            <div class="total-row">
-                <span>PAYMENT METHOD </span>
-                <span>PayPal</span>
-            </div>
-        </div>
-
-        <!-- Footer -->
-        <div class="footer">
-            Thank you for shopping with MediTrack!<br>
-            Stay healthy and take care!
-        </div>
-
-        <button onclick="window.print()" class="btn-print">Print Receipt</button>
-
-    </div>
-
-</body>
-</html>
+            </td>
+        </tr>
+    </table>
 
 </body>
 </html>
