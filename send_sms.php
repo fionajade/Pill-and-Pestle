@@ -1,5 +1,3 @@
-
-
 <?php
 include("connect.php"); // Your database connection
 session_start();
