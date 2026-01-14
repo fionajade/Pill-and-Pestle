@@ -1,3 +1,5 @@
+<?php $title = "Pill and Pestle - Your Trusted Pharmacy"; ?>
+
 <?php
 include("connect.php");
 session_start();
@@ -112,18 +114,7 @@ if (isset($_POST['btnRegister'])) {
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>MediTrack Registration</title>
-
-    <link rel="icon" href="assets/medlogotop.png">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="shared/css/login.css" rel="stylesheet">
-</head>
+<?php include 'user_header.php'; ?>
 
 <body>
     <div class="video-side">
