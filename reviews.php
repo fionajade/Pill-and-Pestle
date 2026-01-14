@@ -19,10 +19,9 @@ $dbError = false;
 
 // 1. Try to fetch from Database
 try {
-    $sql = "SELECT s.*, u.username
-            FROM sms_incoming s
-            LEFT JOIN tbl_user u
-              ON REPLACE(u.contact, '+63', '0') = REPLACE(s.sender, '+63', '0')
+    $sql = "SELECT r.*, u.username 
+            FROM reviews r 
+            JOIN tbl_user u ON r.user_id = u.userID 
             WHERE 1=1";
 
     $params = [];
@@ -32,11 +31,11 @@ try {
         $params[] = $filterDate;
     }
 
-    $sql .= " ORDER BY s.received_at DESC";
+    $sql .= " ORDER BY r.created_at DESC";
 
     $stmt = $pdo->prepare($sql);
     $stmt->execute($params);
-    $feedback = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 } catch (PDOException $e) {
     // If DB fails (table doesn't exist yet), we fall back to dummy data
@@ -169,25 +168,9 @@ $displayName = isset($_SESSION['username']) ? htmlspecialchars($_SESSION['userna
                 </div>
             <?php endif; ?>
 
-                    <div class="col-category">
-                        <?= htmlspecialchars($row['payment_id'] ?? '-') ?>
-                    </div>
+        </div>
 
-                    <div class="col-date">
-                        <?= date('M d, Y H:i', strtotime($row['received_at'])) ?>
-                    </div>
-                </div>
-            <?php endforeach; ?>
-        <?php else: ?>
-            <div class="review-item justify-content-center text-center">
-                <div style="padding: 30px 0;">
-                    <span class="review-user" style="font-size: 1.2rem;">
-                        No reviews or feedback found.
-                    </span>
-                    <p class="review-text">Try changing the filters above.</p>
-                </div>
-            </div>
-        <?php endif; ?>
+        <div style="height: 50px;"></div>
 
       </main>
     </div>
@@ -197,6 +180,4 @@ $displayName = isset($_SESSION['username']) ? htmlspecialchars($_SESSION['userna
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
 </html>
