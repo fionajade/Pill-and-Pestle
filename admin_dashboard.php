@@ -5,22 +5,17 @@ $page_title = "Dashboard";
 session_start();
 include("connect.php");
 
-// Only allow admin access
 if (!isset($_SESSION['username']) || !isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
   header("Location: ../login.php");
   exit();
 }
 
-// --- DATA FETCHING ---
-
-// Total Statistics
 $totalStocks = $pdo->query("SELECT SUM(quantity) FROM medicines")->fetchColumn();
 $totalSuppliers = $pdo->query("SELECT COUNT(*) FROM suppliers")->fetchColumn();
 $totalSales = $pdo->query("SELECT IFNULL(SUM(total_price), 0) FROM sales")->fetchColumn();
 $totalCustomers = $pdo->query("SELECT COUNT(*) FROM tbl_user WHERE role = 'user'")->fetchColumn();
 $expiringSoon = $pdo->query("SELECT COUNT(*) FROM medicines WHERE expiry_date <= DATE_ADD(CURDATE(), INTERVAL 30 DAY)")->fetchColumn();
 
-// Fetch top stock categories
 $topStockCategories = [];
 try {
   $stockStmt = $pdo->query("SELECT c.id, c.name FROM categories c
@@ -31,7 +26,6 @@ try {
   error_log("Category fetch error: " . $e->getMessage());
 }
 
-// Fetch top suppliers
 $topSuppliers = [];
 try {
   $supplierStmt = $pdo->query("SELECT c.name AS category_name, s.name AS supplier_name
@@ -45,7 +39,6 @@ try {
   error_log("Supplier fetch error: " . $e->getMessage());
 }
 
-// Get User Name for Header
 $displayName = isset($_SESSION['username']) ? htmlspecialchars($_SESSION['username']) : 'Admin';
 ?>
 

@@ -44,7 +44,6 @@
 
  /* SIDEBAR & NAVIGATION */
 
- /* Desktop Sidebar */
  .sidebar-brand {
    font-size: 1.5rem;
    font-weight: 600;
@@ -77,7 +76,6 @@
    padding-top: 2rem;
  }
 
- /* Mobile Header & Offcanvas */
  .mobile-header {
    display: flex;
    align-items: center;
@@ -103,7 +101,6 @@
    width: 280px !important;
  }
 
- /* PAGE HEADERS & COMMON BUTTONS */
  .page-title-pre {
    font-size: 1.1rem;
    color: var(--primary-navy);
@@ -146,7 +143,6 @@
    color: white;
  }
 
- /* Dashboard Cards */
  .dark-card {
    background-color: var(--primary-navy);
    color: white;
@@ -220,7 +216,6 @@
 
  /* INVENTORY (Stock & Suppliers) */
 
- /* Sticky Category Pills */
  .cat-navbar {
    background-color: var(--primary-navy);
    border-radius: 20px;
@@ -248,7 +243,6 @@
    color: #fff;
  }
 
- /* Management Forms (Left Column) */
  .light-card,
  .management-card {
    background: #fff;
@@ -265,7 +259,6 @@
    margin-bottom: 1.5rem;
  }
 
- /* Category/Supplier Cards */
  .category-card {
    border-radius: 15px;
    overflow: hidden;
@@ -285,7 +278,6 @@
    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
  }
 
- /* Medicine/Supplier Items */
  .med-section-title {
    color: var(--primary-navy);
    font-size: 1.8rem;
@@ -336,7 +328,6 @@
    font-weight: 500;
  }
 
- /* Stock Badges */
  .badge-stock {
    font-size: 0.7rem;
    padding: 4px 8px;
@@ -359,7 +350,6 @@
    color: var(--stock-out-text);
  }
 
- /* Supplier Specific */
  .supplier-item {
    padding: 15px 20px;
    border-bottom: 1px solid #f0f0f0;
@@ -455,7 +445,6 @@
    color: white;
  }
 
- /* Sticky Table Headers */
  .table thead th {
    background-color: white;
    position: sticky;
@@ -559,7 +548,6 @@
    }
  }
 
- /* FORMS & MODALS */
  .form-control,
  .form-select {
    border-radius: 10px;

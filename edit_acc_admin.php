@@ -8,12 +8,10 @@ if (!$userID) {
     exit;
 }
 
-// Store referrer once (only if not already stored)
 if (!isset($_SESSION['previous_page']) && isset($_SERVER['HTTP_REFERER'])) {
     $_SESSION['previous_page'] = $_SERVER['HTTP_REFERER'];
 }
 
-// Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = trim($_POST['username']);
     $contact = trim($_POST['contact']);
@@ -26,11 +24,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $pdo->prepare("UPDATE tbl_user SET username = ?, contact = ?, address = ?, password = ? WHERE userID = ?");
         $stmt->execute([$username, $contact, $address, $password, $userID]);
         $success = "Account updated successfully.";
-        $_SESSION['username'] = $username; // update session username
+        $_SESSION['username'] = $username; 
     }
 }
 
-// Fetch current user data
 $stmt = $pdo->prepare("SELECT username, contact, address, password FROM tbl_user WHERE userID = ?");
 $stmt->execute([$userID]);
 $user = $stmt->fetch();
@@ -152,7 +149,6 @@ $user = $stmt->fetch();
   </div>
 </div>
 
-<!-- Bootstrap Icons -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
 </body>

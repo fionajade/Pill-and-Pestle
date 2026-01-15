@@ -5,15 +5,12 @@ $page_title = "Medicine Stock";
 session_start();
 include("connect.php");
 
-// Only allow admin access
 if (!isset($_SESSION['username']) || !isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
   header("Location: ../login.php");
   exit();
 }
 
-// --- PHP FORM HANDLERS ---
 
-// 1. Add Category
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_category'])) {
     $name = trim($_POST['category_name']);
     if ($name !== '') {
@@ -28,7 +25,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_category'])) {
     }
 }
 
-// 2. Delete Category
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_category'])) {
     try {
         $stmt = $pdo->prepare("DELETE FROM categories WHERE id = ?");
@@ -40,7 +36,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_category'])) {
     }
 }
 
-// 3. Add Medicine
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_medicine'])) {
     try {
         $stmt = $pdo->prepare("INSERT INTO medicines (name, unit_price, quantity, expiry_date, category_id, supplier_id, unit) VALUES (?, ?, ?, ?, ?, ?, ?)");
@@ -62,7 +57,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_medicine'])) {
     }
 }
 
-// --- DATA FETCHING ---
 $categories = $pdo->query("SELECT * FROM categories ORDER BY name")->fetchAll(PDO::FETCH_ASSOC);
 $suppliers = $pdo->query("SELECT * FROM suppliers ORDER BY name")->fetchAll(PDO::FETCH_ASSOC);
 ?>
@@ -80,7 +74,6 @@ $suppliers = $pdo->query("SELECT * FROM suppliers ORDER BY name")->fetchAll(PDO:
       <?php include("admin_sidebar_desktop.php"); ?>
 
 
-      <!-- === MAIN CONTENT AREA === -->
       <main class="col-lg-10 col-12 p-4">
         
         <p class="page-title-pre">Inventory Management</p>
@@ -93,10 +86,8 @@ $suppliers = $pdo->query("SELECT * FROM suppliers ORDER BY name")->fetchAll(PDO:
 
         <div class="row">
 
-            <!-- === LEFT COLUMN: Management Forms === -->
             <div class="col-lg-4 col-12">
 
-                <!-- 1. Add Category Form -->
                 <div class="light-card">
                     <h5>Manage Categories</h5>
                     <form method="POST" class="mb-3">
@@ -106,7 +97,6 @@ $suppliers = $pdo->query("SELECT * FROM suppliers ORDER BY name")->fetchAll(PDO:
                         </div>
                     </form>
 
-                    <!-- List of Categories -->
                     <div style="max-height: 200px; overflow-y: auto;">
                         <ul class="list-group list-group-flush">
                             <?php foreach ($categories as $cat): ?>
@@ -124,7 +114,6 @@ $suppliers = $pdo->query("SELECT * FROM suppliers ORDER BY name")->fetchAll(PDO:
                     </div>
                 </div>
 
-                <!-- 2. Add Medicine Form -->
                 <div class="light-card">
                     <h5>Add New Medicine</h5>
                     <form method="POST" class="row g-3">
@@ -174,10 +163,8 @@ $suppliers = $pdo->query("SELECT * FROM suppliers ORDER BY name")->fetchAll(PDO:
 
             </div>
 
-            <!-- === RIGHT COLUMN: Stock Display === -->
             <div class="col-lg-8 col-12">
                 
-                <!-- Sticky Category Pills -->
                 <div class="cat-navbar">
                     <?php foreach ($categories as $category): ?>
                         <a class="cat-nav-link" href="#category-<?= $category['id'] ?>">
@@ -186,13 +173,11 @@ $suppliers = $pdo->query("SELECT * FROM suppliers ORDER BY name")->fetchAll(PDO:
                     <?php endforeach; ?>
                 </div>
 
-                <!-- Loop Categories and Medicines -->
                 <?php foreach ($categories as $category): ?>
                     <div id="category-<?= $category['id'] ?>" class="mb-5">
                         <h3 class="med-section-title"><?= htmlspecialchars($category['name']) ?></h3>
 
                         <?php
-                        // Fetch medicines for this category
                         $stmt = $pdo->prepare("SELECT * FROM medicines WHERE category_id = ? ORDER BY name");
                         $stmt->execute([$category['id']]);
                         $medicines = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -226,7 +211,6 @@ $suppliers = $pdo->query("SELECT * FROM suppliers ORDER BY name")->fetchAll(PDO:
 
                                             <hr class="my-3 opacity-25">
 
-                                            <!-- Update Stock Controls -->
                                             <form method="post" action="update_stock.php" class="d-flex align-items-center gap-2 mt-2">
                                                 <input type="hidden" name="medicine_id" value="<?= $med['medicine_id'] ?>">
                                                 <input type="number" name="quantity" class="form-control form-control-sm"
@@ -252,14 +236,12 @@ $suppliers = $pdo->query("SELECT * FROM suppliers ORDER BY name")->fetchAll(PDO:
                     </div>
                 <?php endforeach; ?>
             </div>
-            <!-- End Right Column -->
 
         </div>
       </main>
     </div>
   </div>
 
-  <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
