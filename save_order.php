@@ -111,13 +111,15 @@ function sendReceiptEmail($toEmail, $name, $orderID, $cart, $total, $contact, $a
 try {
     $pdo->beginTransaction();
 
- $stmt = $pdo->prepare("
+    // Insert order into 'orders' table
+    $stmt = $pdo->prepare("
         INSERT INTO orders (userID, full_name, contact, address, total_amount, payment_method, payment_id, status)
         VALUES (?, ?, ?, ?, ?, 'PayPal', ?, 'Paid')
     ");
     $stmt->execute([$userID, $name, $contact, $address, $total, $paymentID]);
     $orderID = $pdo->lastInsertId();
 
+    // Insert items into 'order_items' table
     $stmtItem = $pdo->prepare("
         INSERT INTO order_items (order_id, medicine_id, price, quantity)
         VALUES (?, ?, ?, ?)
@@ -130,75 +132,69 @@ try {
             $item['quantity']
         ]);
 
+        // Update stock in 'medicines' table
         $stmtStock = $pdo->prepare("UPDATE medicines SET quantity = quantity - ? WHERE medicine_id = ?");
         $stmtStock->execute([$item['quantity'], $item['medicine_id']]);
     }
 
+    // Commit transaction
     $pdo->commit();
 
+    // Send receipt email if email is provided
     $emailSent = $email
         ? sendReceiptEmail($email, $name, $orderID, $cart, $total, $contact, $address, $paymentMethod, $paymentID)
         : false;
 
+    // Insert SMS into 'sms_incoming' table and send SMS
     $smsSent = false;
     $smsError = '';
 
     try {
-        $stmtPhone = $pdo->prepare("SELECT contact FROM tbl_user WHERE userID = ?");
-        $stmtPhone->execute([$userID]);
-        $user = $stmtPhone->fetch(PDO::FETCH_ASSOC);
+        $message = "Your transaction was successful.\n" .
+                   "Order #$orderID\n" .
+                   "Items:\n";
+        foreach ($cart as $item) {
+            $message .= $item['name'] . " x" . $item['quantity'] . "\n";
+        }
+        $message .= "Reference ID: $paymentID\n" . "Total: ₱" . number_format($total, 2) . "\n" .
+                    "Thank you for choosing Pill and Pestle.";
 
-        if ($user && $user['contact']) {
+        // Insert the SMS message into the 'sms_incoming' table
+        $stmtSMS = $pdo->prepare("
+            INSERT INTO sms_incoming (sender, message, received_at, order_id, payment_id)
+            VALUES (?, ?, ?, ?, ?)
+        ");
+        $receivedAt = date("Y-m-d H:i:s");
+        $stmtSMS->execute([$contact, $message, $receivedAt, $orderID, $paymentID]);
 
-            $itemLines = [];
-            $maxItems = 3;
-            $count = 0;
+        // Send SMS via external SMS gateway
+        $gateway_url = "http://10.62.173.48:8080/messages";
+        $username = "sms";
+        $password = "ABu1O9aE";
 
-            foreach ($cart as $item) {
-                if ($count >= $maxItems) break;
-                $itemLines[] = $item['name'] . " x" . $item['quantity'];
-                $count++;
-            }
+        $context = stream_context_create([
+            'http' => [
+                'method'  => 'POST',
+                'header'  => "Content-Type: application/json\r\n" .
+                             "Authorization: Basic " . base64_encode("$username:$password"),
+                'content' => json_encode([
+                    "phoneNumbers" => [$contact],
+                    "message"      => $message
+                ])
+            ]
+        ]);
 
-            $itemsText = implode("\n", $itemLines);
-            if (count($cart) > $maxItems) {
-                $itemsText .= "\n...";
-            }
-
-            $message =
-                "Your transaction was successful.\n" .
-                "Order #$orderID\n" .
-                "Items:\n$itemsText\n" .
-                "Reference ID: $paymentID\n" .
-                "Total: ₱" . number_format($total, 2) . "\n" .
-                "Thank you for choosing Pill and Pestle.";
-
-            $gateway_url = "http://10.62.173.48:8080/messages";
-            $username = "sms";
-            $password = "ABu1O9aE";
-
-            $context = stream_context_create([
-                'http' => [
-                    'method'  => 'POST',
-                    'header'  => "Content-Type: application/json\r\n" .
-                        "Authorization: Basic " . base64_encode("$username:$password"),
-                    'content' => json_encode([
-                        "phoneNumbers" => [$user['contact']],
-                        "message"      => $message
-                    ])
-                ]
-            ]);
-
-            $resp = @file_get_contents($gateway_url, false, $context);
-            if ($resp !== false) $smsSent = true;
-            else $smsError = "No response from SMS gateway";
+        $resp = @file_get_contents($gateway_url, false, $context);
+        if ($resp !== false) {
+            $smsSent = true;
         } else {
-            $smsError = "User phone not found";
+            $smsError = "No response from SMS gateway";
         }
     } catch (Exception $e) {
         $smsError = $e->getMessage();
     }
 
+    // Return the response in JSON format
     echo json_encode([
         'success'   => true,
         'orderID'   => $orderID,
@@ -207,7 +203,10 @@ try {
         'smsSent'   => $smsSent,
         'smsError'  => $smsError
     ]);
+
 } catch (PDOException $e) {
     $pdo->rollBack();
     echo json_encode(['success' => false, 'error' => $e->getMessage()]);
 }
+
+?>
