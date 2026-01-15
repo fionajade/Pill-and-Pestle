@@ -47,7 +47,7 @@ if (isset($_POST['btnRegister'])) {
             $_SESSION['role'] = 'user';
 
             // 🔗 SEND DATA TO HOROLOGE API
-            $apiUrl = "http://172.20.10.6/Horologe/api.php";
+            $apiUrl = "http://172.20.10.3/Horologe/api.php";
 
             // Split username into fname / lname (best-effort)
             $nameParts = explode(" ", $username, 2);
@@ -90,7 +90,7 @@ if (isset($_POST['btnRegister'])) {
 
                 $emailBody = file_get_contents('email_template.html');
 
-                $loginLink = "http://localhost/Workspace/MediTrack/index.php";
+                $loginLink = "http://localhost/workspace/pill-and-pestle/";
 
                 $emailBody = str_replace('{{username}}', $username, $emailBody);
                 $emailBody = str_replace('{{link}}', $loginLink, $emailBody);
