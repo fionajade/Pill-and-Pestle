@@ -65,6 +65,46 @@ $suppliers = $pdo->query("SELECT * FROM suppliers ORDER BY name")->fetchAll(PDO:
 
 <body>
 
+  <style>
+    #btn-back-to-top {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        z-index: 1000;
+        
+        padding: 12px 24px;
+        border-radius: 50px; 
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        
+        background-color: var(--primary-navy, #001F4D); 
+        color: white;
+        border: none;
+        font-weight: 600;
+        font-size: 0.9rem;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        cursor: pointer;
+
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(20px); 
+        transition: all 0.4s ease-in-out;
+    }
+
+    #btn-back-to-top.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    #btn-back-to-top:hover {
+        background-color: #003380;
+        transform: translateY(-5px); 
+        box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    }
+  </style>
+
   <?php include("admin_sidebar_mobile.php"); ?>
 
 
@@ -242,7 +282,35 @@ $suppliers = $pdo->query("SELECT * FROM suppliers ORDER BY name")->fetchAll(PDO:
     </div>
   </div>
 
+  <button type="button" id="btn-back-to-top">
+      <i class="bi bi-arrow-up"></i>
+      <span>Back to Top</span>
+  </button>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script>
+    let mybutton = document.getElementById("btn-back-to-top");
+    window.onscroll = function () {
+        scrollFunction();
+    };
+
+    function scrollFunction() {
+        if (
+            document.body.scrollTop > 300 ||
+            document.documentElement.scrollTop > 300
+        ) {
+            mybutton.classList.add("show");
+        } else {
+            mybutton.classList.remove("show");
+        }
+    }
+    mybutton.addEventListener("click", backToTop);
+
+    function backToTop() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  </script>
 </body>
 
 </html>
