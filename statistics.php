@@ -5,31 +5,23 @@ $page_title = "Statistics";
 session_start();
 include("connect.php");
 
-// Only allow admin access
 if (!isset($_SESSION['username']) || !isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
   header("Location: ../login.php");
   exit();
 }
 
-// --- DATA LOGIC ---
 
-// Total Customers
 $totalCustomers = $pdo->query("SELECT COUNT(*) FROM tbl_user WHERE role = 'user'")->fetchColumn();
 
-// Total Sales
 $totalSales = $pdo->query("SELECT IFNULL(SUM(total_price), 0) FROM sales")->fetchColumn();
 
-// Total Stocks
 $totalStocks = $pdo->query("SELECT SUM(quantity) FROM medicines")->fetchColumn();
 
-// Fetch users for dropdown
 $allUsers = $pdo->query("SELECT username FROM tbl_user WHERE role = 'user' ORDER BY username ASC")->fetchAll(PDO::FETCH_COLUMN);
 
-// Initialize date filters
 $from = $_GET['from_date'] ?? null;
 $to = $_GET['to_date'] ?? null;
 
-// Filtered Sales Breakdown
 $salesBreakdownQuery = "
   SELECT DATE_FORMAT(sale_date, '%Y-%m') AS sale_month, SUM(total_price) AS total
   FROM sales
@@ -43,7 +35,6 @@ $salesBreakdownQuery .= "
   LIMIT 6";
 $salesBreakdown = $pdo->query($salesBreakdownQuery)->fetchAll(PDO::FETCH_ASSOC);
 
-// Stock by Category
 $stockPerCategory = $pdo->query("
   SELECT c.name AS category, SUM(m.quantity) AS total_quantity
   FROM medicines m
@@ -52,7 +43,6 @@ $stockPerCategory = $pdo->query("
   ORDER BY total_quantity DESC
 ")->fetchAll(PDO::FETCH_ASSOC);
 
-// Low Stock Medicines
 $lowStock = $pdo->query("
   SELECT name, quantity
   FROM medicines
@@ -60,7 +50,6 @@ $lowStock = $pdo->query("
   ORDER BY quantity ASC
 ")->fetchAll(PDO::FETCH_ASSOC);
 
-// About to Expire Medicines
 $aboutToExpire = $pdo->query("
   SELECT name, expiry_date
   FROM medicines
@@ -68,7 +57,6 @@ $aboutToExpire = $pdo->query("
   ORDER BY expiry_date ASC
 ")->fetchAll(PDO::FETCH_ASSOC);
 
-// Top Selling Medicines
 $topSelling = $pdo->query("
   SELECT m.name, SUM(s.quantity) AS sold
   FROM sales s
@@ -78,7 +66,6 @@ $topSelling = $pdo->query("
   LIMIT 5
 ")->fetchAll(PDO::FETCH_ASSOC);
 
-// Filtered Sales Records
 $filterQuery = "SELECT s.sale_id, u.username, m.name AS medicine, s.quantity, s.total_price, s.sale_date
                 FROM sales s
                 JOIN tbl_user u ON s.user_id = u.userID
@@ -97,7 +84,6 @@ if (!empty($from) && !empty($to)) {
 }
 $allSales = $pdo->query($filterQuery)->fetchAll(PDO::FETCH_ASSOC);
 
-// Customer Breakdown Table
 $customerBreakdown = $pdo->query("
   SELECT u.username, COUNT(s.sale_id) AS purchases, SUM(s.total_price) AS total_spent
   FROM sales s
@@ -108,7 +94,6 @@ $customerBreakdown = $pdo->query("
   ORDER BY total_spent DESC
 ")->fetchAll(PDO::FETCH_ASSOC);
 
-// Excel Export
 if (isset($_GET['export']) && $_GET['export'] == 'excel') {
   header("Content-Type: application/vnd.ms-excel");
   header("Content-Disposition: attachment; filename=sales_report.xls");
@@ -119,7 +104,6 @@ if (isset($_GET['export']) && $_GET['export'] == 'excel') {
   exit;
 }
 
-// Get User Name
 $displayName = isset($_SESSION['username']) ? htmlspecialchars($_SESSION['username']) : 'Admin';
 ?>
 <?php include("admin_header.php"); ?>
@@ -136,14 +120,12 @@ $displayName = isset($_SESSION['username']) ? htmlspecialchars($_SESSION['userna
       <?php include("admin_sidebar_desktop.php"); ?>
 
 
-      <!-- === MAIN CONTENT AREA === -->
       <main class="col-lg-10 col-12 p-4">
         
         <p class="page-title-pre">Analytics & Reports</p>
         <h1 class="page-title">Statistics</h1>
         <hr>
 
-        <!-- Top Metrics Row -->
         <div class="row g-4 mb-5">
             <div class="col-md-4">
                 <div class="stat-card">
@@ -165,9 +147,7 @@ $displayName = isset($_SESSION['username']) ? htmlspecialchars($_SESSION['userna
             </div>
         </div>
 
-        <!-- ROW 1: Sales & Customers Breakdown -->
         <div class="row g-4 mb-4">
-            <!-- Sales Breakdown -->
             <div class="col-lg-6">
                 <div class="data-card">
                     <div class="data-card-header">
@@ -199,12 +179,10 @@ $displayName = isset($_SESSION['username']) ? htmlspecialchars($_SESSION['userna
                 </div>
             </div>
 
-            <!-- Customer Breakdown -->
             <div class="col-lg-6">
                 <div class="data-card">
                     <div class="data-card-header flex-column flex-sm-row align-items-start align-items-sm-center gap-2">
                         <div class="card-label"><i class="bi bi-people"></i> Top Customers</div>
-                        <!-- Mini Filter for this card -->
                         <form method="GET" class="d-flex gap-2 w-100 w-sm-auto">
                             <input type="date" name="from_date" class="form-control form-control-sm" style="min-width: 110px;" value="<?= htmlspecialchars($_GET['from_date'] ?? '') ?>">
                             <input type="date" name="to_date" class="form-control form-control-sm" style="min-width: 110px;" value="<?= htmlspecialchars($_GET['to_date'] ?? '') ?>">
@@ -239,9 +217,7 @@ $displayName = isset($_SESSION['username']) ? htmlspecialchars($_SESSION['userna
             </div>
         </div>
 
-        <!-- ROW 2: Stock & Top Selling -->
         <div class="row g-4 mb-4">
-            <!-- Stock by Category -->
             <div class="col-lg-6">
                 <div class="data-card">
                     <div class="data-card-header">
@@ -268,7 +244,6 @@ $displayName = isset($_SESSION['username']) ? htmlspecialchars($_SESSION['userna
                 </div>
             </div>
 
-            <!-- Top Selling -->
             <div class="col-lg-6">
                 <div class="data-card">
                     <div class="data-card-header">
@@ -296,7 +271,6 @@ $displayName = isset($_SESSION['username']) ? htmlspecialchars($_SESSION['userna
             </div>
         </div>
 
-        <!-- ROW 3: Alerts (Low Stock / Expiring) -->
         <div class="row g-4 mb-5">
             <div class="col-lg-6">
                 <div class="data-card border-danger" style="border-width: 0 0 0 4px;">
@@ -359,7 +333,6 @@ $displayName = isset($_SESSION['username']) ? htmlspecialchars($_SESSION['userna
             </div>
         </div>
 
-        <!-- Full Sales Record -->
         <div class="data-card mb-5 h-auto">
             <div class="data-card-header d-block d-md-flex">
                 <div class="card-label mb-3 mb-md-0"><i class="bi bi-clipboard-data"></i> All Sales Records</div>
@@ -424,7 +397,6 @@ $displayName = isset($_SESSION['username']) ? htmlspecialchars($_SESSION['userna
     </div>
   </div>
 
-  <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 

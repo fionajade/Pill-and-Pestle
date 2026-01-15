@@ -5,15 +5,12 @@ $page_title = "Suppliers";
 session_start();
 include("connect.php");
 
-// Only allow admin access
 if (!isset($_SESSION['username']) || !isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
   header("Location: ../login.php");
   exit();
 }
 
-// --- SUPPLIER LOGIC START ---
 
-// Fetch categories
 $categories = [];
 try {
     $categories = $pdo->query("SELECT id, name FROM categories ORDER BY name")->fetchAll(PDO::FETCH_ASSOC);
@@ -21,7 +18,6 @@ try {
     error_log("Error fetching categories: " . $e->getMessage());
 }
 
-// Assign a unique color to each category
 $baseColors = ['#FFDEE9', '#D0F4DE', '#E4C1F9', '#C1E1C1', '#FAD6A5', '#A0CED9', '#FFDAC1', '#D5AAFF'];
 $category_colors = [];
 $index = 0;
@@ -30,7 +26,6 @@ foreach ($categories as $cat) {
     $index++;
 }
 
-// Fetch suppliers and join with category
 $suppliers = [];
 try {
     $stmt = $pdo->query("
@@ -44,7 +39,6 @@ try {
     error_log("Error fetching suppliers: " . $e->getMessage());
 }
 
-// Group suppliers by category
 $grouped = [];
 foreach ($suppliers as $sup) {
     $cat_id = $sup['category_id'] ?? 'uncategorized';
@@ -53,7 +47,6 @@ foreach ($suppliers as $sup) {
     $grouped[$cat_id][] = $sup;
 }
 
-// Get User Name for Header
 $displayName = isset($_SESSION['username']) ? htmlspecialchars($_SESSION['username']) : 'Admin';
 ?>
 
@@ -70,10 +63,8 @@ $displayName = isset($_SESSION['username']) ? htmlspecialchars($_SESSION['userna
       <?php include("admin_sidebar_desktop.php"); ?>
 
 
-      <!-- === MAIN CONTENT AREA === -->
       <main class="col-lg-10 col-12 p-4">
         
-        <!-- Header & Action Button -->
         <div class="d-flex justify-content-between align-items-end mb-3">
             <div>
                 <p class="page-title-pre">Management</p>
@@ -85,8 +76,6 @@ $displayName = isset($_SESSION['username']) ? htmlspecialchars($_SESSION['userna
         </div>
         <hr>
 
-        <!-- Suppliers Grid -->
-        <!-- Responsive Logic: 1 col on mobile, 2 on tablet, 3 on large screens -->
         <div class="row g-4">
             <?php foreach ($categories as $cat): ?>
                 <?php
@@ -96,12 +85,10 @@ $displayName = isset($_SESSION['username']) ? htmlspecialchars($_SESSION['userna
                 ?>
                 <div class="col-12 col-md-6 col-xl-4">
                     <div class="category-card">
-                        <!-- Colored Header -->
                         <div class="category-header" style="background-color: <?= $color ?>;">
                             <?= htmlspecialchars($cat_name) ?>
                         </div>
 
-                        <!-- List of Suppliers in this Category -->
                         <div class="supplier-list-container">
                         <?php if (!empty($grouped[$cat_id])): ?>
                             <?php foreach ($grouped[$cat_id] as $sup): ?>
@@ -132,13 +119,11 @@ $displayName = isset($_SESSION['username']) ? htmlspecialchars($_SESSION['userna
             <?php endforeach; ?>
         </div>
         
-        <!-- Bottom spacing for mobile scrolling -->
         <div class="mb-5"></div>
       </main>
     </div>
   </div>
 
-  <!-- Add/Edit Supplier Modal -->
   <div class="modal fade" id="supplierModal" tabindex="-1" aria-labelledby="supplierModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <form action="save_supplier.php" method="post" class="modal-content">
@@ -188,10 +173,8 @@ $displayName = isset($_SESSION['username']) ? htmlspecialchars($_SESSION['userna
         </div>
     </div>
 
-  <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-  <!-- Edit Script -->
   <script>
         function editSupplier(supplier) {
             document.getElementById('supplier_id').value = supplier.id;
@@ -201,14 +184,12 @@ $displayName = isset($_SESSION['username']) ? htmlspecialchars($_SESSION['userna
             document.getElementById('email').value = supplier.email;
             document.getElementById('category_id').value = supplier.category_id;
 
-            // Update Modal Title
             document.getElementById('supplierModalLabel').innerText = "Edit Supplier";
 
             const modal = new bootstrap.Modal(document.getElementById('supplierModal'));
             modal.show();
         }
 
-        // Reset modal on close
         const myModal = document.getElementById('supplierModal');
         myModal.addEventListener('hidden.bs.modal', function () {
             document.querySelector('form').reset();

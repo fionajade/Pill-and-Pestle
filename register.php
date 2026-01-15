@@ -4,7 +4,6 @@
 include("connect.php");
 session_start();
 
-// PHPMailer
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -24,7 +23,6 @@ if (isset($_POST['btnRegister'])) {
     $address = mysqli_real_escape_string($conn, $_POST['address']);
     $password = mysqli_real_escape_string($conn, $_POST['password']);
 
-    // 🔍 Check if username OR email already exists
     $checkQuery = "SELECT userID FROM tbl_user WHERE username = '$username' OR email = '$email'";
     $checkResult = executeQuery($checkQuery);
 
@@ -32,26 +30,21 @@ if (isset($_POST['btnRegister'])) {
         $error = "Username or email already exists.";
     } else {
 
-        // ➕ 1. INSERT INTO LOCAL DATABASE (MAC)
         $insertQuery = "INSERT INTO tbl_user
             (username, email, password, address, contact, role)
             VALUES
             ('$username', '$email', '$password', '$address', '$contact', 'user')";
 
-        // Check if LOCAL insertion worked
         if (executeQuery($insertQuery)) {
 
             $userID = mysqli_insert_id($conn);
 
-            // Auto-login
             $_SESSION['userID'] = $userID;
             $_SESSION['username'] = $username;
             $_SESSION['role'] = 'user';
 
-            // 🔗 SEND DATA TO HOROLOGE API
-            $apiUrl = "http://172.20.10.6/Horologe/api.php";
+            $apiUrl = "http://172.20.10.8/Horologe/api.php";
 
-            // Split username into fname / lname (best-effort)
             $nameParts = explode(" ", $username, 2);
             $fname = $nameParts[0];
             $lname = $nameParts[1] ?? "";

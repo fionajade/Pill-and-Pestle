@@ -1,11 +1,8 @@
 <link href="admin.css" rel="stylesheet">
-
 <?php
-// Get the current file name (e.g., "dashboard.php")
 $current_page = basename($_SERVER['PHP_SELF']);
 ?>
 
-<!-- === MOBILE HEADER === -->
 <div class="mobile-header d-lg-none">
     <button class="hamburger-btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileSidebar">
         &#9776;
@@ -13,7 +10,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <div class="fs-5 fw-bold" style="color: var(--primary-navy);">Pill-and-Pestle</div>
 </div>
 
-<!-- === MOBILE SIDEBAR === -->
 <div class="offcanvas offcanvas-start" tabindex="-1" id="mobileSidebar">
     <div class="offcanvas-header">
         <h5 class="offcanvas-title sidebar-brand">Pill-and-Pestle</h5>
@@ -43,7 +39,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <nav class="nav flex-column w-100">
                 <a class="nav-link" href="backup.php">Backup</a>
                 <a class="nav-link" href="restore.php">Restore</a>
-                <a class="nav-link" href="edit_account.php">Edit Account</a>
+                <a class="nav-link" href="edit_acc_admin.php">Edit Account</a>
                 <a class="nav-link" href="logout.php">Log Out</a>
                 </nav>
     </div>

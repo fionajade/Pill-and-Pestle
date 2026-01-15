@@ -5,19 +5,16 @@ $page_title = "Reviews";
 session_start();
 include("connect.php");
 
-// Only allow admin access
 if (!isset($_SESSION['username']) || !isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
   header("Location: ../login.php");
   exit();
 }
 
-// --- DATA FETCHING LOGIC ---
 
 $filterDate = $_GET['filter_date'] ?? null; 
 $reviews = [];
 $dbError = false;
 
-// 1. Try to fetch from Database
 try {
     $sql = "SELECT r.*, u.username 
             FROM reviews r 
@@ -38,12 +35,10 @@ try {
     $reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 } catch (PDOException $e) {
-    // If DB fails (table doesn't exist yet), we fall back to dummy data
-    // error_log($e->getMessage()); 
+
     $dbError = true; 
 }
 
-// 2. Fallback to Dummy Data if DB result is empty (for demonstration)
 if (empty($reviews)) {
     $allReviews = [
         [
@@ -60,7 +55,6 @@ if (empty($reviews)) {
         ],
     ];
 
-    // Apply Filter to Dummy Data
     if ($filterDate) {
         foreach ($allReviews as $rev) {
             if (date('Y-m-d', strtotime($rev['created_at'])) === $filterDate) {
@@ -68,14 +62,11 @@ if (empty($reviews)) {
             }
         }
     } else {
-        // If no filter, show all (or if DB failed and we want to show demo data)
-        // Only show dummy data if we didn't actually run a successful query that just happened to have 0 results
-        // For this template, we'll force show dummy data if array is empty so the UI looks populated.
+
         $reviews = $allReviews;
     }
 }
 
-// Get User Name
 $displayName = isset($_SESSION['username']) ? htmlspecialchars($_SESSION['username']) : 'Admin';
 ?>
 <?php include("admin_header.php"); ?>
@@ -92,17 +83,14 @@ $displayName = isset($_SESSION['username']) ? htmlspecialchars($_SESSION['userna
       <?php include("admin_sidebar_desktop.php"); ?>
 
 
-      <!-- === MAIN CONTENT AREA === -->
       <main class="col-lg-10 col-12 p-4">
         
-        <!-- Header & Filter -->
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-3">
             <div>
                 <p class="page-title-pre">Customer Feedback</p>
                 <h1 class="page-title mb-0">Reviews</h1>
             </div>
             
-            <!-- Date Filter Form -->
             <form method="GET" class="filter-container mt-3 mt-md-0">
                 <?php if ($filterDate): ?>
                     <a href="reviews.php" class="btn btn-outline-secondary btn-sm">Show All</a>
@@ -117,22 +105,18 @@ $displayName = isset($_SESSION['username']) ? htmlspecialchars($_SESSION['userna
         
         <hr>
 
-        <!-- Reviews Card -->
         <div class="review-card">
 
-            <!-- Desktop Header Row -->
             <div class="review-list-header">
                 <div class="col-content">User & Review</div>
                 <div class="col-category">Category</div>
                 <div class="col-date">Date</div>
             </div>
 
-            <!-- Review Items -->
             <?php if (!empty($reviews)): ?>
                 <?php foreach ($reviews as $row): ?>
                     <div class="review-item">
                         
-                        <!-- Content -->
                         <div class="col-content mb-2 mb-md-0">
                             <div class="d-flex align-items-center gap-2">
                                 <i class="bi bi-person-circle fs-4 text-secondary"></i>
@@ -143,14 +127,12 @@ $displayName = isset($_SESSION['username']) ? htmlspecialchars($_SESSION['userna
                             </div>
                         </div>
 
-                        <!-- Category -->
                         <div class="col-category mb-2 mb-md-0 ps-md-0 ps-5">
                             <span class="review-category">
                                 <?= htmlspecialchars($row['category'] ?? 'General') ?>
                             </span>
                         </div>
 
-                        <!-- Date -->
                         <div class="col-date ps-md-0 ps-5">
                             <span class="review-date justify-content-md-end">
                                 <i class="bi bi-calendar3"></i> 
@@ -176,7 +158,6 @@ $displayName = isset($_SESSION['username']) ? htmlspecialchars($_SESSION['userna
     </div>
   </div>
 
-  <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
