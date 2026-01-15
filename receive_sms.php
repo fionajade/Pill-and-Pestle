@@ -1,5 +1,5 @@
 <?php
-include("connect.php"); 
+include("connect.php");
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
@@ -8,7 +8,7 @@ $postData = $_POST;
 
 $data = json_decode($rawData, true);
 if (!is_array($data)) {
-    $data = $postData; 
+    $data = $postData;
 }
 
 $from = $data['from'] ?? $data['sender'] ?? 'Unknown';
@@ -29,16 +29,10 @@ $orderQuery->bind_param("s", $from);
 $orderQuery->execute();
 $orderQuery->bind_result($foundOrderId, $foundPaymentId);
 if ($orderQuery->fetch()) {
-    $order_id = $foundOrderId;       
-    $payment_id = $foundPaymentId;   
+    $order_id = $foundOrderId;
+    $payment_id = $foundPaymentId;
 }
 $orderQuery->close();
-
-$stmt = $conn->prepare("
-    INSERT INTO sms_incoming (sender, message, received_at, order_id, payment_id)
-    VALUES (?, ?, ?, ?, ?)
-");
-$stmt->bind_param("sssis", $from, $message, $received, $order_id, $payment_id);
 
 if ($stmt->execute()) {
 } else {
