@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 13, 2026 at 10:05 AM
+-- Generation Time: Jan 16, 2026 at 04:23 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -73,14 +73,14 @@ CREATE TABLE `medicines` (
 
 INSERT INTO `medicines` (`medicine_id`, `name`, `brand`, `description`, `quantity`, `unit_price`, `expiry_date`, `added_on`, `category_id`, `supplier_id`, `img`) VALUES
 (1, 'Ibuprofen', 'Advil', 'Nonsteroidal anti-inflammatory drug (NSAID)', 105, 89.85, '2026-12-31', '2025-06-10 18:04:38', 1, NULL, 'Ibruprofen.png'),
-(2, 'Acetaminophen (Paracetamol)', 'Tylenol', 'Pain reliever and fever reducer', 201, 67.50, '2026-12-31', '2025-06-10 18:04:38', 1, NULL, 'Acetaminophen.png'),
-(3, 'Aspirin', 'Bayer', 'Used for pain, fever, and inflammation', 85, 59.85, '2026-12-31', '2025-06-10 18:04:38', 1, NULL, 'Aspirin.png'),
-(4, 'Naproxen', 'Aleve', 'NSAID for inflammation and pain', 78, 93.75, '2026-12-31', '2025-06-10 18:04:38', 1, NULL, 'Naproxen.png'),
-(5, 'Diclofenac', 'Voltaren', 'NSAID used to treat pain and inflammation', 55, 105.00, '2026-12-31', '2025-06-10 18:04:38', 1, NULL, 'Diclofenac.png'),
-(6, 'Tramadol', 'Ultram', 'Opioid pain medication', 34, 194.85, '2026-12-31', '2025-06-10 18:04:38', 1, NULL, 'Tramadol.png'),
-(7, 'Morphine', 'MS Contin', 'Strong opioid painkiller', 50, 225.00, '2026-12-31', '2025-06-10 18:04:38', 1, NULL, 'Morphine.png'),
+(2, 'Acetaminophen ', 'Tylenol', 'Pain reliever and fever reducer', 199, 67.50, '2026-12-31', '2025-06-10 18:04:38', 1, NULL, 'Acetaminophen.png'),
+(3, 'Aspirin', 'Bayer', 'Used for pain, fever, and inflammation', 84, 59.85, '2026-12-31', '2025-06-10 18:04:38', 1, NULL, 'Aspirin.png'),
+(4, 'Naproxen', 'Aleve', 'NSAID for inflammation and pain', 73, 93.75, '2026-12-31', '2025-06-10 18:04:38', 1, NULL, 'Naproxen.png'),
+(5, 'Diclofenac', 'Voltaren', 'NSAID used to treat pain and inflammation', 51, 105.00, '2026-12-31', '2025-06-10 18:04:38', 1, NULL, 'Diclofenac.png'),
+(6, 'Tramadol', 'Ultram', 'Opioid pain medication', 30, 194.85, '2026-12-31', '2025-06-10 18:04:38', 1, NULL, 'Tramadol.png'),
+(7, 'Morphine', 'MS Contin', 'Strong opioid painkiller', 49, 225.00, '2026-12-31', '2025-06-10 18:04:38', 1, NULL, 'Morphine.png'),
 (8, 'Codeine', 'Tylenol #3', 'Mild to moderate pain relief', 80, 131.25, '2026-12-31', '2025-06-10 18:04:38', 1, NULL, 'Codeine.png'),
-(9, 'Ketorolac', 'Toradol', 'Short-term pain management', 68, 138.00, '2026-12-31', '2025-06-10 18:04:38', 1, NULL, 'Ketorolac.png'),
+(9, 'Ketorolac', 'Toradol', 'Short-term pain management', 67, 138.00, '2026-12-31', '2025-06-10 18:04:38', 1, NULL, 'Ketorolac.png'),
 (10, 'Penicillin', 'Pfizerpen', 'Antibiotic used for bacterial infections', 120, 72.00, '2026-12-31', '2025-06-10 18:04:38', 2, NULL, 'Penicillin.png'),
 (11, 'Amoxicillin', 'Amoxil', 'Broad-spectrum penicillin antibiotic', 100, 82.50, '2026-12-31', '2025-06-10 18:04:38', 2, NULL, 'Amoxicillin.png'),
 (12, 'Ciprofloxacin', 'Cipro', 'Fluoroquinolone antibiotic', 80, 93.00, '2026-12-31', '2025-06-10 18:04:38', 2, NULL, 'Ciprofloxacin.png'),
@@ -146,7 +146,7 @@ INSERT INTO `medicines` (`medicine_id`, `name`, `brand`, `description`, `quantit
 (72, 'Aspirin', 'Ecotrin', 'Low-dose antiplatelet', 200, 37.50, '2026-12-31', '2025-06-10 18:04:38', 8, NULL, 'Aspirin.png'),
 (73, 'Diphenhydramine', 'Benadryl', 'First-generation antihistamine', 150, 60.00, '2026-12-31', '2025-06-10 18:04:38', 9, NULL, 'Diphenhydramine.png'),
 (74, 'Loratadine', 'Claritin', 'Second-generation antihistamine', 140, 75.00, '2026-12-31', '2025-06-10 18:04:38', 9, NULL, 'Loratadine.png'),
-(75, 'Cetirizine', 'Zyrtec', 'Non-drowsy antihistamine', 130, 82.50, '2026-12-31', '2025-06-10 18:04:38', 9, NULL, 'Cetirizine.png'),
+(75, 'Cetirizine', 'Zyrtec', 'Non-drowsy antihistamine', 129, 82.50, '2026-12-31', '2025-06-10 18:04:38', 9, NULL, 'Cetirizine.png'),
 (76, 'Fexofenadine', 'Allegra', 'Second-generation antihistamine', 120, 90.00, '2026-12-31', '2025-06-10 18:04:38', 9, NULL, 'Fexofenadine.png'),
 (77, 'Chlorpheniramine', 'Chlor-Trimeton', 'First-gen antihistamine', 110, 56.25, '2026-12-31', '2025-06-10 18:04:38', 9, NULL, 'Chlorpheniramine.png'),
 (78, 'Hydroxyzine', 'Vistaril', 'Anxiety and allergy treatment', 100, 97.50, '2026-12-31', '2025-06-10 18:04:38', 9, NULL, 'Hydroxyzine.png'),
@@ -173,70 +173,6 @@ CREATE TABLE `orders` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `orders`
---
-
-INSERT INTO `orders` (`order_id`, `userID`, `full_name`, `contact`, `address`, `total_amount`, `payment_method`, `payment_id`, `status`, `created_at`) VALUES
-(1, 16, 'username', '0963214587', 'STB', 8.49, 'PayPal', '6H548197KF893060D', 'Paid', '2026-01-09 20:59:41'),
-(2, 16, 'username', '0963214587', 'STB', 8.49, 'PayPal', '3SM611415K803024H', 'Paid', '2026-01-09 21:02:20'),
-(3, 16, 'username', '0963214587', 'STB', 4.50, 'PayPal', '1T92535858030654E', 'Paid', '2026-01-09 21:25:44'),
-(4, 16, 'username', '0963214587', 'STB', 8.49, 'PayPal', '6JU74411P70285532', 'Paid', '2026-01-09 22:21:30'),
-(5, 16, 'username', '0963214587', 'STB', 19.99, 'PayPal', '46J47509LL950943B', 'Paid', '2026-01-09 23:54:27'),
-(6, 16, 'username', '0963214587', 'STB', 19.99, 'PayPal', '4N07106976903050M', 'Paid', '2026-01-09 23:54:57'),
-(7, 16, 'username', '0963214587', 'STB', 19.99, 'PayPal', '0C006589CC5135846', 'Paid', '2026-01-09 23:57:25'),
-(9, 16, 'username', '0963214587', 'STB', 8.49, 'PayPal', '9G6864901M0276154', 'Paid', '2026-01-10 00:39:25'),
-(10, 16, 'username', '0963214587', 'STB', 8.49, 'PayPal', '4XR57640LV5745015', 'Paid', '2026-01-10 00:47:22'),
-(11, 36, 'piyoya', '0963214587', 'STB', 9.98, 'PayPal', '1E488004D52017442', 'Paid', '2026-01-10 00:49:26'),
-(12, 36, 'piyoya', '0963214587', 'STB', 16.23, 'PayPal', '00M027551B240343B', 'Paid', '2026-01-10 00:53:21'),
-(13, 36, 'piyoya', '0963214587', 'STB', 19.99, 'PayPal', '7E812691C8039315E', 'Paid', '2026-01-10 00:57:57'),
-(14, 36, 'piyoya', '0963214587', 'STB', 19.99, 'PayPal', '88N27501DU513492F', 'Paid', '2026-01-10 01:00:01'),
-(15, 36, 'piyoya', '0963214587', 'STB', 19.99, 'PayPal', '0LM280816R2659827', 'Paid', '2026-01-10 01:05:53'),
-(16, 36, 'piyoya', '0963214587', 'STB', 13.25, 'PayPal', '5Y324443CS170805V', 'Paid', '2026-01-10 01:09:11'),
-(17, 36, 'piyoya', '0963214587', 'STB', 19.99, 'PayPal', '5SU83442S6241642F', 'Paid', '2026-01-10 01:15:05'),
-(18, 37, 'piyoya', '09166314087', 'Altura Bata, Tanauan City', 9.98, 'PayPal', '02F09197RE568064U', 'Paid', '2026-01-10 10:31:53'),
-(19, 38, 'piyoya', '09166314087', 'Altura Bata, Tanauan City', 17.95, 'PayPal', '9W141737AX208094X', 'Paid', '2026-01-10 10:53:49'),
-(20, 38, 'piyoya', '09166314087', 'Altura Bata, Tanauan City', 17.95, 'PayPal', '52F53325RT871220D', 'Paid', '2026-01-10 11:04:28'),
-(21, 38, 'piyoya', '09166314087', 'Altura Bata, Tanauan City', 17.95, 'PayPal', '3YU57853W74081820', 'Paid', '2026-01-10 11:52:33'),
-(22, 38, 'piyoya', '09166314087', 'Altura Bata, Tanauan City', 17.95, 'PayPal', '6DU32340PU437053N', 'Paid', '2026-01-10 11:58:58'),
-(23, 38, 'piyoya', '09166314087', 'Altura Bata, Tanauan City', 17.95, 'PayPal', '94J02018B5929403P', 'Paid', '2026-01-10 12:25:08'),
-(24, 38, 'piyoya', '09166314087', 'Altura Bata, Tanauan City', 9.98, 'PayPal', '0GU12553GY401100F', 'Paid', '2026-01-10 12:27:22'),
-(25, 38, 'piyoya', '09166314087', 'Altura Bata, Tanauan City', 19.99, 'PayPal', '8MF49125XS069154E', 'Paid', '2026-01-10 12:29:57'),
-(26, 38, 'piyoya', '09166314087', 'Altura Bata, Tanauan City', 3.99, 'PayPal', '3C729470PJ0190838', 'Paid', '2026-01-10 12:31:38'),
-(27, 38, 'piyoya', '09166314087', 'Altura Bata, Tanauan City', 12.99, 'PayPal', '1XY18557N3509354L', 'Paid', '2026-01-10 12:36:38'),
-(28, 38, 'piyoya', '09166314087', 'Altura Bata, Tanauan City', 12.99, 'PayPal', '34L64215TW451752W', 'Paid', '2026-01-10 12:37:26'),
-(29, 38, 'piyoya', '09166314087', 'Altura Bata, Tanauan City', 3.99, 'PayPal', '45T768888H640421U', 'Paid', '2026-01-10 18:29:22'),
-(30, 39, 'asdfg', '09166314087', 'Altura Bata, Tanauan City', 12.99, 'PayPal', '94218865N68530155', 'Paid', '2026-01-12 09:57:40'),
-(31, 40, 'jerome', '09664685409', 'STB', 12.99, 'PayPal', '0P693173TA205525C', 'Paid', '2026-01-12 10:17:49'),
-(32, 40, 'jerome', '09664685409', 'STB', 12.99, 'PayPal', '2FX62539H2723772H', 'Paid', '2026-01-12 10:19:28'),
-(33, 40, 'jerome', '09664685409', 'STB', 12.99, 'PayPal', '8A0648296M384835B', 'Paid', '2026-01-12 10:20:52'),
-(34, 40, 'jerome', '09166314087', 'STB', 12.99, 'PayPal', '6YC091232T652041W', 'Paid', '2026-01-12 10:24:16'),
-(35, 40, 'jerome', '09664685409', 'STB', 12.99, 'PayPal', '9X935914E6212082B', 'Paid', '2026-01-12 10:26:58'),
-(36, 38, 'piyoya', '09166314087', 'STB', 7.00, 'PayPal', '84B21399E7093143B', 'Paid', '2026-01-12 10:51:15'),
-(37, 38, 'piyoya', '09166314087', 'STB', 7.00, 'PayPal', '1UL57592W8975614V', 'Paid', '2026-01-12 10:52:55'),
-(38, 38, 'piyoya', '09166314087', 'STB', 12.99, 'PayPal', '7BY760322G858861A', 'Paid', '2026-01-12 11:35:56'),
-(39, 38, 'piyoya', '09664685409', 'STB', 12.99, 'PayPal', '02F95804CW410590W', 'Paid', '2026-01-12 11:37:28'),
-(40, 38, 'piyoya', '09166314087', 'STB', 8.75, 'PayPal', '155389756F130482L', 'Paid', '2026-01-12 12:00:04'),
-(41, 38, 'piyoya', '09166314087', 'STB', 7.00, 'PayPal', '3G0006464A052970E', 'Paid', '2026-01-12 12:13:09'),
-(42, 38, 'piyoya', '09166314087', 'STB', 8.75, 'PayPal', '83X259189U7652432', 'Paid', '2026-01-12 12:36:27'),
-(43, 38, 'piyoya', '09166314087', 'STB', 8.75, 'PayPal', '6AW801904S486760S', 'Paid', '2026-01-12 12:37:42'),
-(44, 38, 'piyoya', '09166314087', 'STB', 8.75, 'PayPal', '3NG54217LS1864323', 'Paid', '2026-01-12 12:38:46'),
-(45, 38, 'piyoya', '09166314087', 'STB', 12.99, 'PayPal', '17K80603MX368013G', 'Paid', '2026-01-12 12:39:55'),
-(46, 38, 'piyoya', '09166314087', 'STB', 12.99, 'PayPal', '6AD65785W0764674R', 'Paid', '2026-01-12 12:42:58'),
-(47, 38, 'piyoya', '09166314087', 'STB', 12.99, 'PayPal', '07P33290BG079514E', 'Paid', '2026-01-12 12:45:33'),
-(48, 38, 'piyoya', '09166314087', 'STB', 9.20, 'PayPal', '6LH84148KP066172M', 'Paid', '2026-01-12 12:48:34'),
-(49, 38, 'piyoya', '09166314087', 'STB', 12.99, 'PayPal', '79A439094W500802L', 'Paid', '2026-01-12 12:52:51'),
-(50, 38, 'piyoya', '09166314087', 'STB', 7.00, 'PayPal', '1NU61926SR438551A', 'Paid', '2026-01-12 12:58:32'),
-(51, 38, 'piyoya', '09166314087', 'STB', 7.00, 'PayPal', '5W280500FU494741P', 'Paid', '2026-01-12 13:01:46'),
-(52, 38, 'piyoya', '09166314087', 'STB', 3.99, 'PayPal', '4A677862CY6511256', 'Paid', '2026-01-12 18:19:05'),
-(53, 38, 'piyoya', '09166314087', 'STB', 12.99, 'PayPal', '34V075858M906035E', 'Paid', '2026-01-12 18:21:10'),
-(54, 38, 'piyoya', '09166314087', 'STB', 12.99, 'PayPal', '5KX405703T650515F', 'Paid', '2026-01-12 18:22:42'),
-(55, 38, 'piyoya', '09166314087', 'STB', 105.00, 'PayPal', '3RP533219L719261G', 'Paid', '2026-01-13 05:48:35'),
-(56, 38, 'piyoya', '09166314087', 'STB', 59.85, 'PayPal', '4VU77608U8227381R', 'Paid', '2026-01-13 07:41:23'),
-(57, 38, 'piyoya', '09166314087', 'STB', 59.85, 'PayPal', '32K87388JW9411225', 'Paid', '2026-01-13 07:54:38'),
-(58, 38, 'piyoya', '09166314087', 'STB', 67.50, 'PayPal', '3FH077221U7969024', 'Paid', '2026-01-13 08:34:08'),
-(59, 38, 'piyoya', '09166314087', 'STB', 194.85, 'PayPal', '8D0103923Y186335M', 'Paid', '2026-01-13 08:35:45');
-
 -- --------------------------------------------------------
 
 --
@@ -250,94 +186,6 @@ CREATE TABLE `order_items` (
   `price` decimal(10,2) DEFAULT NULL,
   `quantity` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `order_items`
---
-
-INSERT INTO `order_items` (`order_item_id`, `order_id`, `medicine_id`, `price`, `quantity`) VALUES
-(1, 1, 2, 4.50, 1),
-(2, 1, 3, 3.99, 1),
-(3, 2, 2, 4.50, 1),
-(4, 2, 3, 3.99, 1),
-(5, 3, 2, 4.50, 1),
-(6, 4, 3, 3.99, 1),
-(7, 4, 2, 4.50, 1),
-(8, 5, 6, 12.99, 1),
-(9, 5, 5, 7.00, 1),
-(10, 6, 5, 7.00, 1),
-(11, 6, 6, 12.99, 1),
-(12, 7, 5, 7.00, 1),
-(13, 7, 6, 12.99, 1),
-(15, 9, 2, 4.50, 1),
-(16, 9, 3, 3.99, 1),
-(17, 10, 2, 4.50, 1),
-(18, 10, 3, 3.99, 1),
-(19, 11, 1, 5.99, 1),
-(20, 11, 3, 3.99, 1),
-(21, 12, 4, 6.25, 1),
-(22, 12, 1, 5.99, 1),
-(23, 12, 3, 3.99, 1),
-(24, 13, 5, 7.00, 1),
-(25, 13, 6, 12.99, 1),
-(26, 14, 6, 12.99, 1),
-(27, 14, 5, 7.00, 1),
-(28, 15, 5, 7.00, 1),
-(29, 15, 6, 12.99, 1),
-(30, 16, 4, 6.25, 1),
-(31, 16, 5, 7.00, 1),
-(32, 17, 5, 7.00, 1),
-(33, 17, 6, 12.99, 1),
-(34, 18, 3, 3.99, 1),
-(35, 18, 1, 5.99, 1),
-(36, 19, 8, 8.75, 1),
-(37, 19, 9, 9.20, 1),
-(38, 20, 8, 8.75, 1),
-(39, 20, 9, 9.20, 1),
-(40, 21, 9, 9.20, 1),
-(41, 21, 8, 8.75, 1),
-(42, 22, 8, 8.75, 1),
-(43, 22, 9, 9.20, 1),
-(44, 23, 8, 8.75, 1),
-(45, 23, 9, 9.20, 1),
-(46, 24, 3, 3.99, 1),
-(47, 24, 1, 5.99, 1),
-(48, 25, 6, 12.99, 1),
-(49, 25, 5, 7.00, 1),
-(50, 26, 3, 3.99, 1),
-(51, 27, 6, 12.99, 1),
-(52, 28, 6, 12.99, 1),
-(53, 29, 3, 3.99, 1),
-(54, 30, 6, 12.99, 1),
-(55, 31, 6, 12.99, 1),
-(56, 32, 6, 12.99, 1),
-(57, 33, 6, 12.99, 1),
-(58, 34, 6, 12.99, 1),
-(59, 35, 6, 12.99, 1),
-(60, 36, 5, 7.00, 1),
-(61, 37, 5, 7.00, 1),
-(62, 38, 6, 12.99, 1),
-(63, 39, 6, 12.99, 1),
-(64, 40, 8, 8.75, 1),
-(65, 41, 5, 7.00, 1),
-(66, 42, 8, 8.75, 1),
-(67, 43, 8, 8.75, 1),
-(68, 44, 8, 8.75, 1),
-(69, 45, 6, 12.99, 1),
-(70, 46, 6, 12.99, 1),
-(71, 47, 6, 12.99, 1),
-(72, 48, 9, 9.20, 1),
-(73, 49, 6, 12.99, 1),
-(74, 50, 5, 7.00, 1),
-(75, 51, 5, 7.00, 1),
-(76, 52, 3, 3.99, 1),
-(77, 53, 6, 12.99, 1),
-(78, 54, 6, 12.99, 1),
-(79, 55, 5, 105.00, 1),
-(80, 56, 3, 59.85, 1),
-(81, 57, 3, 59.85, 1),
-(82, 58, 2, 67.50, 1),
-(83, 59, 6, 194.85, 1);
 
 -- --------------------------------------------------------
 
@@ -384,13 +232,6 @@ CREATE TABLE `sms_incoming` (
   `payment_id` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `sms_incoming`
---
-
-INSERT INTO `sms_incoming` (`id`, `sender`, `message`, `received_at`, `order_id`, `payment_id`) VALUES
-(25, '+639166314087', 'Your transaction was successful. Thank you for using our service.', '2026-01-13 09:35:52', NULL, NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -431,20 +272,6 @@ CREATE TABLE `tbl_user` (
   `contact` varchar(11) DEFAULT NULL,
   `role` varchar(20) NOT NULL DEFAULT 'user'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `tbl_user`
---
-
-INSERT INTO `tbl_user` (`userID`, `username`, `email`, `password`, `address`, `contact`, `role`) VALUES
-(1, 'admin', NULL, 'admin', 'admin\r\n', '09123456789', 'admin'),
-(2, 'piyo', NULL, 'hoho', 'Altura Bata', '09123456789', 'user'),
-(5, 'Pi', NULL, 'hoho', 'Altura Bata', '09123456789', 'user'),
-(9, 'Jade', NULL, 'hehe', 'Altura Bata', '09166314087', 'user'),
-(16, 'username', '', 'password', '', '', 'user'),
-(38, 'piyoya', 'jadee.fiona4@gmail.com', 'piyoyayi', 'Altura Bata Tanauan city', '09166314087', 'user'),
-(39, 'asdfg', 'doboluexwayzi@gmail.com', 'piyoyayi', 'Altura Bata Tanauan city', '09166314087', 'user'),
-(40, 'jerome', 'jeromeacads@gmail.com', 'jirom', 'Elac', '09664685409', 'user');
 
 --
 -- Indexes for dumped tables
@@ -525,13 +352,13 @@ ALTER TABLE `medicines`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `order_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
+  MODIFY `order_item_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `sales`
@@ -543,7 +370,7 @@ ALTER TABLE `sales`
 -- AUTO_INCREMENT for table `sms_incoming`
 --
 ALTER TABLE `sms_incoming`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `suppliers`
@@ -555,7 +382,7 @@ ALTER TABLE `suppliers`
 -- AUTO_INCREMENT for table `tbl_user`
 --
 ALTER TABLE `tbl_user`
-  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
