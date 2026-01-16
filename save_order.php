@@ -39,12 +39,12 @@ function sendReceiptEmail($toEmail, $name, $orderID, $cart, $total, $contact, $a
         $mail->isSMTP();
         $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
-        $mail->Username   = 'piyoacadnotes@gmail.com';
-        $mail->Password   = 'zdzr kzod gqti yuji';
+        $mail->Username   = 'pillandpestle@gmail.com';
+        $mail->Password   = 'sakq hyep fnug vybj';
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port       = 587;
 
-        $mail->setFrom('piyoacadnotes@gmail.com', 'Pill and Pestle');
+        $mail->setFrom('pillandpestle@gmail.com', 'Pill and Pestle');
         $mail->addAddress($toEmail, $name);
 
         $mail->isHTML(true);
